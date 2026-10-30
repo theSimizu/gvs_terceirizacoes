@@ -1,1 +1,5 @@
 html/
+ts/
+application-debug-http.properties
+.env
+plan.md

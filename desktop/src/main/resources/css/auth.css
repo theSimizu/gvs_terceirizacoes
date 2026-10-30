@@ -1,0 +1,118 @@
+.root {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 14px;
+}
+
+.auth-root {
+    -fx-background-color: radial-gradient(center 100% 0%, radius 100%, rgba(59, 130, 246, 0.20), #0b1121 55%);
+    -fx-padding: 16px;
+}
+
+.auth-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12px;
+    -fx-padding: 28px;
+    -fx-spacing: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 40, 0, 0, 20);
+}
+
+.auth-card-register {
+    -fx-padding: 20px;
+    -fx-spacing: 5px;
+}
+
+.auth-card-register .auth-input {
+    -fx-padding: 9px 14px;
+}
+
+.auth-title {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.auth-label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+
+.auth-input {
+    -fx-background-color: #f1f5f9;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8px;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 12px 16px;
+    -fx-text-fill: #0f172a;
+    -fx-prompt-text-fill: #94a3b8;
+    -fx-font-size: 14px;
+}
+
+.auth-input:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #3b82f6;
+}
+
+.auth-button {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-padding: 12px 20px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.5), 10, 0, 0, 4);
+}
+
+.auth-button:hover {
+    -fx-background-color: #2563eb;
+}
+
+.auth-button:disabled {
+    -fx-opacity: 0.6;
+}
+
+.auth-error {
+    -fx-text-fill: #ef4444;
+    -fx-font-size: 13px;
+}
+
+.auth-success {
+    -fx-text-fill: #10b981;
+    -fx-font-size: 13px;
+}
+
+.auth-hint {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 11px;
+}
+
+.auth-link {
+    -fx-text-fill: #3b82f6;
+    -fx-font-size: 13px;
+    -fx-border-color: transparent;
+    -fx-padding: 4px;
+}
+
+.auth-link:hover {
+    -fx-underline: true;
+}
+
+.home-root {
+    -fx-background-color: radial-gradient(center 100% 0%, radius 100%, rgba(59, 130, 246, 0.20), #0b1121 55%);
+}
+
+.home-title {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.home-subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 14px;
+}

@@ -1,0 +1,9 @@
+target
+.git
+.env
+.vscode
+*.md
+.idea
+.classpath
+.project
+.settings

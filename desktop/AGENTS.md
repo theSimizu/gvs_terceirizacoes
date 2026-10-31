@@ -3,19 +3,23 @@
 ## Overview
 
 JavaFX desktop client backed by Spring Boot (non-web), talking to the GVS REST API
-through Spring Cloud OpenFeign. Login/registration only at present.
+through Spring Cloud OpenFeign. Login, registration, and a read-only dashboard are
+implemented; the remaining navigation sections are placeholders.
 
 - Java 25, Spring Boot 4.2.0-SNAPSHOT, JavaFX 25.0.5, Maven Wrapper.
 - Base package: `com.h_group.gvs_terceirizacoes_desktop`
 - API base URL: `gvs.api.base-url` (default `http://localhost:8080/api`)
 - The app is not a web server: `spring.main.web-application-type=none`.
+- The auth token is persisted at `gvs.session.file` (default
+  `~/.gvs-terceirizacoes/session.json`, mode 0600) and restored on startup;
+  expired tokens are discarded.
 
 ## Commands
 
 Run from `desktop/`:
 
 - Compile: `./mvnw -q compile`
-- Test: `./mvnw test` (only a Spring context-load test currently)
+- Test: `./mvnw test` (Spring context-load plus session/token-store unit tests)
 - Run app: `./mvnw javafx:run`
 - Full Feign/HTTP debug logging: activate the `debug-http` profile, e.g.
   `./mvnw javafx:run -Dspring-boot.run.profiles=debug-http` or pass
@@ -24,11 +28,14 @@ Run from `desktop/`:
 
 ## Layout
 
-- `api/` — Feign clients (`AuthClient`), auth interceptor, error decoder, exceptions.
-- `config/` — `FeignConfig`, `ApiProperties`.
+- `api/` — Feign clients (`AuthClient` plus the dashboard clients), auth interceptor,
+  error decoder, exceptions.
+- `config/` — `FeignConfig`, `ApiProperties`, `SessionProperties`.
 - `dto/` — Java records for request/response payloads.
-- `service/` — orchestration and error translation (`AuthService`).
-- `session/` — in-memory auth session/token.
+- `service/` — orchestration, error translation, and dashboard aggregation
+  (`AuthService`, `DashboardService`).
+- `session/` — in-memory auth session plus the persisted token store
+  (`~/.gvs-terceirizacoes/session.json`, mode 0600).
 - `ui/` — JavaFX views and `Navigator`.
 - `validation/` — input validation.
 - `html/` — legacy reference admin frontend; ignored by Git and not part of the Maven build.
@@ -54,5 +61,6 @@ Run from `desktop/`:
 
 ## Known inconsistencies
 
-- `dto/LoginResponse` and `dto/UserDTO` still map response keys `usuario` / `nome`,
-  while the backend returns `user` / `name`. Reconcile these when touching auth responses.
+- `dto/RegisterResponse` expects `token` / `usuario` / `message`, while the backend
+  `POST /auth/register` returns a bare `UserResponse` (`id`, `name`, `email`). The
+  desktop treats a missing token as "registration succeeded, sign in".

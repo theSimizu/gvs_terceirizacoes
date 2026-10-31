@@ -6,12 +6,21 @@ import com.h_group.gvs_terceirizacoes_desktop.dto.LoginRequest;
 import com.h_group.gvs_terceirizacoes_desktop.dto.LoginResponse;
 import com.h_group.gvs_terceirizacoes_desktop.dto.RegisterRequest;
 import com.h_group.gvs_terceirizacoes_desktop.dto.RegisterResponse;
+import com.h_group.gvs_terceirizacoes_desktop.dto.UserDTO;
 import com.h_group.gvs_terceirizacoes_desktop.session.AuthSession;
+import com.h_group.gvs_terceirizacoes_desktop.session.JwtExpiry;
+import com.h_group.gvs_terceirizacoes_desktop.session.StoredSession;
+import com.h_group.gvs_terceirizacoes_desktop.session.TokenStore;
 import feign.FeignException;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+
+	private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
 	private static final String CONNECTION_ERROR =
 			"Não foi possível conectar ao servidor. Verifique sua conexão.";
@@ -20,9 +29,15 @@ public class AuthService {
 
 	private final AuthSession authSession;
 
-	public AuthService(AuthClient authClient, AuthSession authSession) {
+	private final TokenStore tokenStore;
+
+	private final JwtExpiry jwtExpiry;
+
+	public AuthService(AuthClient authClient, AuthSession authSession, TokenStore tokenStore, JwtExpiry jwtExpiry) {
 		this.authClient = authClient;
 		this.authSession = authSession;
+		this.tokenStore = tokenStore;
+		this.jwtExpiry = jwtExpiry;
 	}
 
 	public LoginResponse login(String email, String password) {
@@ -32,6 +47,7 @@ public class AuthService {
 				throw new ApiException("Resposta inválida do servidor.", 0);
 			}
 			authSession.store(response.token(), response.user());
+			persist(response.token(), response.user());
 			return response;
 		}
 		catch (ApiException exception) {
@@ -64,6 +80,34 @@ public class AuthService {
 		}
 		catch (Exception exception) {
 			throw new ApiException(CONNECTION_ERROR, exception);
+		}
+	}
+
+	public boolean restoreSession() {
+		Optional<StoredSession> stored = tokenStore.load();
+		if (stored.isEmpty()) {
+			return false;
+		}
+		StoredSession session = stored.get();
+		if (jwtExpiry.isExpired(session.token())) {
+			tokenStore.clear();
+			return false;
+		}
+		authSession.store(session.token(), session.user());
+		return true;
+	}
+
+	public void logout() {
+		authSession.clear();
+		tokenStore.clear();
+	}
+
+	private void persist(String token, UserDTO user) {
+		try {
+			tokenStore.save(new StoredSession(token, user));
+		}
+		catch (RuntimeException exception) {
+			log.warn("Could not persist the session.", exception);
 		}
 	}
 

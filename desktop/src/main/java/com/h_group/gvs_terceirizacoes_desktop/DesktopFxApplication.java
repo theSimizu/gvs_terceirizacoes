@@ -1,5 +1,6 @@
 package com.h_group.gvs_terceirizacoes_desktop;
 
+import com.h_group.gvs_terceirizacoes_desktop.service.AuthService;
 import com.h_group.gvs_terceirizacoes_desktop.ui.Navigator;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -23,8 +24,14 @@ public class DesktopFxApplication extends Application {
 	@Override
 	public void start(Stage stage) {
 		Navigator navigator = context.getBean(Navigator.class);
+		AuthService authService = context.getBean(AuthService.class);
 		navigator.initialize(stage);
-		navigator.showLogin();
+		if (authService.restoreSession()) {
+			navigator.showHome();
+		}
+		else {
+			navigator.showLogin();
+		}
 	}
 
 	@Override

@@ -2,12 +2,7 @@ package com.h_group.gvs_terceirizacoes_desktop.ui;
 
 import com.h_group.gvs_terceirizacoes_desktop.dto.UserDTO;
 import com.h_group.gvs_terceirizacoes_desktop.service.AuthService;
-import com.h_group.gvs_terceirizacoes_desktop.service.ClientService;
-import com.h_group.gvs_terceirizacoes_desktop.service.DashboardService;
-import com.h_group.gvs_terceirizacoes_desktop.service.ProviderService;
 import com.h_group.gvs_terceirizacoes_desktop.session.AuthSession;
-import com.h_group.gvs_terceirizacoes_desktop.validation.ClientValidator;
-import com.h_group.gvs_terceirizacoes_desktop.validation.ProviderValidator;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,16 +50,18 @@ public class AppShell {
 	private final StackPane contentHost = new StackPane();
 
 	public AppShell(Navigator navigator, AuthService authService, AuthSession authSession,
-			DashboardService dashboardService, ClientService clientService, ClientValidator clientValidator,
-			ProviderService providerService, ProviderValidator providerValidator) {
+			PageDependencies dependencies) {
 		this.navigator = navigator;
 		this.authService = authService;
 		this.authSession = authSession;
 
-		pages.put(DASHBOARD, new DashboardPage(this, dashboardService));
-		pages.put("clientes", new ClientsPage(this, clientService, clientValidator));
-		pages.put("prestadores", new ProvidersPage(this, providerService, providerValidator));
-		pages.put("contratos", new PlaceholderPage("Contratos"));
+		pages.put(DASHBOARD, new DashboardPage(this, dependencies.dashboardService()));
+		pages.put("clientes",
+				new ClientsPage(this, dependencies.clientService(), dependencies.clientValidator()));
+		pages.put("prestadores",
+				new ProvidersPage(this, dependencies.providerService(), dependencies.providerValidator()));
+		pages.put("contratos", new ContractsPage(this, dependencies.contractService(),
+				dependencies.contractValidator(), dependencies.clientService(), dependencies.providerService()));
 		pages.put("ordens", new PlaceholderPage("Ordens de Serviço"));
 		pages.put("historico", new PlaceholderPage("Auditoria"));
 		pages.put("usuarios", new PlaceholderPage("Usuários do Sistema"));

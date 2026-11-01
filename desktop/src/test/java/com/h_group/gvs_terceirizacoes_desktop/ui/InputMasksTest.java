@@ -1,7 +1,9 @@
 package com.h_group.gvs_terceirizacoes_desktop.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
 class InputMasksTest {
@@ -39,6 +41,28 @@ class InputMasksTest {
 	@Test
 	void formatsCpfCnpjAsCnpjBeyondElevenDigits() {
 		assertEquals("12.345.678/0001-90", InputMasks.formatCpfCnpj("12345678000190"));
+	}
+
+	@Test
+	void formatsCurrency() {
+		assertEquals("R$ 1.234,56", InputMasks.formatCurrency(new BigDecimal("1234.56")));
+	}
+
+	@Test
+	void formatsWholeCurrency() {
+		assertEquals("R$ 1.000,00", InputMasks.formatCurrency(new BigDecimal("1000")));
+	}
+
+	@Test
+	void parsesCurrencyFromMaskedText() {
+		assertEquals(new BigDecimal("1234.56"),
+				InputMasks.parseCurrency("R$ 1.234,56"));
+	}
+
+	@Test
+	void parsesEmptyCurrencyAsNull() {
+		assertNull(InputMasks.parseCurrency(""));
+		assertNull(InputMasks.parseCurrency(null));
 	}
 
 }

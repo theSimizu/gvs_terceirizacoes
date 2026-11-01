@@ -2,6 +2,7 @@ package com.h_group.gvs_terceirizacoes_desktop.ui;
 
 import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ClientDTO;
+import com.h_group.gvs_terceirizacoes_desktop.service.AuditLog;
 import com.h_group.gvs_terceirizacoes_desktop.service.ClientService;
 import com.h_group.gvs_terceirizacoes_desktop.validation.ClientValidator;
 import java.net.URL;
@@ -52,6 +53,8 @@ public class ClientsPage implements Page {
 
 	private final ClientValidator clientValidator;
 
+	private final AuditLog auditLog;
+
 	private final List<ClientDTO> allClients = new ArrayList<>();
 
 	private final List<ClientDTO> visibleClients = new ArrayList<>();
@@ -86,10 +89,12 @@ public class ClientsPage implements Page {
 
 	private int pageCount = 1;
 
-	public ClientsPage(AppShell shell, ClientService clientService, ClientValidator clientValidator) {
+	public ClientsPage(AppShell shell, ClientService clientService, ClientValidator clientValidator,
+			AuditLog auditLog) {
 		this.shell = shell;
 		this.clientService = clientService;
 		this.clientValidator = clientValidator;
+		this.auditLog = auditLog;
 		configureActions();
 		configureTable();
 		configurePagination();
@@ -393,10 +398,18 @@ public class ClientsPage implements Page {
 		boolean creating = existing == null;
 		Function<ClientForm, ClientDTO> saver;
 		if (creating) {
-			saver = form -> clientService.create(form.toCreateRequest());
+			saver = form -> {
+				ClientDTO saved = clientService.create(form.toCreateRequest());
+				auditLog.record(AuditLog.CREATE, AuditLog.CLIENT, idOf(saved), form.toDetails());
+				return saved;
+			};
 		}
 		else {
-			saver = form -> clientService.update(existing.id(), form.toUpdateRequest());
+			saver = form -> {
+				ClientDTO saved = clientService.update(existing.id(), form.toUpdateRequest());
+				auditLog.record(AuditLog.UPDATE, AuditLog.CLIENT, idOf(saved), form.toDetails());
+				return saved;
+			};
 		}
 
 		ClientFormDialog dialog = new ClientFormDialog(shell, clientValidator,
@@ -415,7 +428,12 @@ public class ClientsPage implements Page {
 		shell.clearError();
 		setBusy(true);
 		shell.setLoading(true);
-		FxAsync.run(() -> clientService.update(client.id(), form.toUpdateRequest()), updated -> {
+		FxAsync.run(() -> {
+			ClientDTO updated = clientService.update(client.id(), form.toUpdateRequest());
+			auditLog.record(AuditLog.STATUS_CHANGE, AuditLog.CLIENT, idOf(client),
+					Map.of("status", nextStatus));
+			return updated;
+		}, updated -> {
 			setBusy(false);
 			load();
 		}, failure -> {
@@ -446,6 +464,7 @@ public class ClientsPage implements Page {
 		shell.setLoading(true);
 		FxAsync.run(() -> {
 			clientService.delete(client.id());
+			auditLog.record(AuditLog.DELETE, AuditLog.CLIENT, idOf(client), Map.of());
 			return Boolean.TRUE;
 		}, done -> {
 			setBusy(false);
@@ -490,6 +509,10 @@ public class ClientsPage implements Page {
 
 	private boolean isActive(String status) {
 		return ACTIVE.equalsIgnoreCase(status);
+	}
+
+	private String idOf(ClientDTO client) {
+		return client == null || client.id() == null ? null : client.id().toString();
 	}
 
 }

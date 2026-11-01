@@ -56,15 +56,16 @@ public class AppShell {
 		this.authSession = authSession;
 
 		pages.put(DASHBOARD, new DashboardPage(this, dependencies.dashboardService()));
-		pages.put("clientes",
-				new ClientsPage(this, dependencies.clientService(), dependencies.clientValidator()));
-		pages.put("prestadores",
-				new ProvidersPage(this, dependencies.providerService(), dependencies.providerValidator()));
+		pages.put("clientes", new ClientsPage(this, dependencies.clientService(),
+				dependencies.clientValidator(), dependencies.auditLog()));
+		pages.put("prestadores", new ProvidersPage(this, dependencies.providerService(),
+				dependencies.providerValidator(), dependencies.auditLog()));
 		pages.put("contratos", new ContractsPage(this, dependencies.contractService(),
-				dependencies.contractValidator(), dependencies.clientService(), dependencies.providerService()));
+				dependencies.contractValidator(), dependencies.clientService(), dependencies.providerService(),
+				dependencies.auditLog()));
 		pages.put("ordens", new ServiceOrdersPage(this, dependencies.serviceOrderService(),
-				dependencies.serviceOrderValidator(), dependencies.contractService()));
-		pages.put("historico", new PlaceholderPage("Auditoria"));
+				dependencies.serviceOrderValidator(), dependencies.contractService(), dependencies.auditLog()));
+		pages.put("historico", new HistoryPage(this, dependencies.historyService()));
 		pages.put("usuarios", new PlaceholderPage("Usuários do Sistema"));
 	}
 

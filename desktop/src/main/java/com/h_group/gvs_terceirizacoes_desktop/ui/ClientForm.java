@@ -3,6 +3,8 @@ package com.h_group.gvs_terceirizacoes_desktop.ui;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ClientDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.CreateClientRequest;
 import com.h_group.gvs_terceirizacoes_desktop.dto.UpdateClientRequest;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public record ClientForm(
 		String legalName,
@@ -22,6 +24,16 @@ public record ClientForm(
 
 	public static ClientForm from(ClientDTO client, String status) {
 		return new ClientForm(client.legalName(), client.cnpj(), client.email(), client.phone(), status);
+	}
+
+	public Map<String, Object> toDetails() {
+		Map<String, Object> details = new LinkedHashMap<>();
+		details.put("legalName", legalName);
+		details.put("cnpj", cnpj);
+		details.put("email", email);
+		details.put("phone", phone);
+		details.put("status", status);
+		return details;
 	}
 
 }

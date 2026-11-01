@@ -484,6 +484,11 @@
     -fx-text-fill: #ef4444;
 }
 
+.status-neutral {
+    -fx-background-color: rgba(148, 163, 184, 0.2);
+    -fx-text-fill: #94a3b8;
+}
+
 .btn-link {
     -fx-background-color: transparent;
     -fx-border-color: transparent;

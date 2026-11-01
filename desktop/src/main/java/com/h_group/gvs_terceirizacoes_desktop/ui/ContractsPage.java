@@ -4,6 +4,7 @@ import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ClientDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ContractDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ProviderDTO;
+import com.h_group.gvs_terceirizacoes_desktop.service.AuditLog;
 import com.h_group.gvs_terceirizacoes_desktop.service.ClientService;
 import com.h_group.gvs_terceirizacoes_desktop.service.ContractService;
 import com.h_group.gvs_terceirizacoes_desktop.service.ProviderService;
@@ -63,6 +64,8 @@ public class ContractsPage implements Page {
 
 	private final ProviderService providerService;
 
+	private final AuditLog auditLog;
+
 	private final List<ContractDTO> allContracts = new ArrayList<>();
 
 	private final List<ContractDTO> visibleContracts = new ArrayList<>();
@@ -98,12 +101,13 @@ public class ContractsPage implements Page {
 	private int pageCount = 1;
 
 	public ContractsPage(AppShell shell, ContractService contractService, ContractValidator contractValidator,
-			ClientService clientService, ProviderService providerService) {
+			ClientService clientService, ProviderService providerService, AuditLog auditLog) {
 		this.shell = shell;
 		this.contractService = contractService;
 		this.contractValidator = contractValidator;
 		this.clientService = clientService;
 		this.providerService = providerService;
+		this.auditLog = auditLog;
 		configureActions();
 		configureTable();
 		configurePagination();
@@ -470,10 +474,18 @@ public class ContractsPage implements Page {
 			boolean creating = existing == null;
 			Function<ContractForm, ContractDTO> saver;
 			if (creating) {
-				saver = form -> contractService.create(form.toCreateRequest());
+				saver = form -> {
+					ContractDTO saved = contractService.create(form.toCreateRequest());
+					auditLog.record(AuditLog.CREATE, AuditLog.CONTRACT, idOf(saved), form.toDetails());
+					return saved;
+				};
 			}
 			else {
-				saver = form -> contractService.update(existing.id(), form.toUpdateRequest());
+				saver = form -> {
+					ContractDTO saved = contractService.update(existing.id(), form.toUpdateRequest());
+					auditLog.record(AuditLog.UPDATE, AuditLog.CONTRACT, idOf(saved), form.toDetails());
+					return saved;
+				};
 			}
 
 			ContractFormDialog dialog = new ContractFormDialog(shell, contractValidator,
@@ -504,7 +516,12 @@ public class ContractsPage implements Page {
 		shell.clearError();
 		setBusy(true);
 		shell.setLoading(true);
-		FxAsync.run(() -> contractService.toggleStatus(contract.id(), contract.status()), updated -> {
+		FxAsync.run(() -> {
+			ContractDTO updated = contractService.toggleStatus(contract.id(), contract.status());
+			auditLog.record(AuditLog.STATUS_CHANGE, AuditLog.CONTRACT, idOf(contract),
+					Map.of("status", updated.status()));
+			return updated;
+		}, updated -> {
 			setBusy(false);
 			load();
 		}, failure -> {
@@ -525,6 +542,7 @@ public class ContractsPage implements Page {
 		shell.setLoading(true);
 		FxAsync.run(() -> {
 			contractService.delete(contract.id());
+			auditLog.record(AuditLog.DELETE, AuditLog.CONTRACT, idOf(contract), Map.of());
 			return Boolean.TRUE;
 		}, done -> {
 			setBusy(false);
@@ -594,6 +612,10 @@ public class ContractsPage implements Page {
 
 	private boolean isActive(String status) {
 		return ACTIVE.equalsIgnoreCase(status);
+	}
+
+	private String idOf(ContractDTO contract) {
+		return contract == null || contract.id() == null ? null : contract.id().toString();
 	}
 
 	private record Lookups(List<ClientDTO> clients, List<ProviderDTO> providers) {

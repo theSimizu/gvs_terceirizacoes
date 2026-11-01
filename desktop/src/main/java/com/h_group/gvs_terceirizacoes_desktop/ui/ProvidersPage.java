@@ -2,6 +2,7 @@ package com.h_group.gvs_terceirizacoes_desktop.ui;
 
 import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ProviderDTO;
+import com.h_group.gvs_terceirizacoes_desktop.service.AuditLog;
 import com.h_group.gvs_terceirizacoes_desktop.service.ProviderService;
 import com.h_group.gvs_terceirizacoes_desktop.validation.ProviderValidator;
 import java.net.URL;
@@ -48,6 +49,8 @@ public class ProvidersPage implements Page {
 
 	private final ProviderValidator providerValidator;
 
+	private final AuditLog auditLog;
+
 	private final List<ProviderDTO> allProviders = new ArrayList<>();
 
 	private final List<ProviderDTO> visibleProviders = new ArrayList<>();
@@ -82,10 +85,12 @@ public class ProvidersPage implements Page {
 
 	private int pageCount = 1;
 
-	public ProvidersPage(AppShell shell, ProviderService providerService, ProviderValidator providerValidator) {
+	public ProvidersPage(AppShell shell, ProviderService providerService, ProviderValidator providerValidator,
+			AuditLog auditLog) {
 		this.shell = shell;
 		this.providerService = providerService;
 		this.providerValidator = providerValidator;
+		this.auditLog = auditLog;
 		configureActions();
 		configureTable();
 		configurePagination();
@@ -386,14 +391,26 @@ public class ProvidersPage implements Page {
 		return value == null ? "" : value.replaceAll("\\D", "");
 	}
 
+	private String idOf(ProviderDTO provider) {
+		return provider == null || provider.id() == null ? null : provider.id().toString();
+	}
+
 	private void openForm(ProviderDTO existing) {
 		boolean creating = existing == null;
 		Function<ProviderForm, ProviderDTO> saver;
 		if (creating) {
-			saver = form -> providerService.create(form.toCreateRequest());
+			saver = form -> {
+				ProviderDTO saved = providerService.create(form.toCreateRequest());
+				auditLog.record(AuditLog.CREATE, AuditLog.PROVIDER, idOf(saved), form.toDetails());
+				return saved;
+			};
 		}
 		else {
-			saver = form -> providerService.update(existing.id(), form.toUpdateRequest());
+			saver = form -> {
+				ProviderDTO saved = providerService.update(existing.id(), form.toUpdateRequest());
+				auditLog.record(AuditLog.UPDATE, AuditLog.PROVIDER, idOf(saved), form.toDetails());
+				return saved;
+			};
 		}
 
 		ProviderFormDialog dialog = new ProviderFormDialog(shell, providerValidator,
@@ -409,7 +426,12 @@ public class ProvidersPage implements Page {
 		shell.clearError();
 		setBusy(true);
 		shell.setLoading(true);
-		FxAsync.run(() -> providerService.setAvailable(provider.id(), !provider.available()), updated -> {
+		FxAsync.run(() -> {
+			ProviderDTO updated = providerService.setAvailable(provider.id(), !provider.available());
+			auditLog.record(AuditLog.STATUS_CHANGE, AuditLog.PROVIDER, idOf(provider),
+					Map.of("available", !provider.available()));
+			return updated;
+		}, updated -> {
 			setBusy(false);
 			load();
 		}, failure -> {
@@ -440,6 +462,7 @@ public class ProvidersPage implements Page {
 		shell.setLoading(true);
 		FxAsync.run(() -> {
 			providerService.delete(provider.id());
+			auditLog.record(AuditLog.DELETE, AuditLog.PROVIDER, idOf(provider), Map.of());
 			return Boolean.TRUE;
 		}, done -> {
 			setBusy(false);

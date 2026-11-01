@@ -3,6 +3,7 @@ package com.h_group.gvs_terceirizacoes_desktop.ui;
 import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ContractDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ServiceOrderDTO;
+import com.h_group.gvs_terceirizacoes_desktop.service.AuditLog;
 import com.h_group.gvs_terceirizacoes_desktop.service.ContractService;
 import com.h_group.gvs_terceirizacoes_desktop.service.ServiceOrderService;
 import com.h_group.gvs_terceirizacoes_desktop.validation.ServiceOrderValidator;
@@ -70,6 +71,8 @@ public class ServiceOrdersPage implements Page {
 
 	private final ContractService contractService;
 
+	private final AuditLog auditLog;
+
 	private final List<ServiceOrderDTO> allOrders = new ArrayList<>();
 
 	private final List<ServiceOrderDTO> visibleOrders = new ArrayList<>();
@@ -107,11 +110,12 @@ public class ServiceOrdersPage implements Page {
 	private int pageCount = 1;
 
 	public ServiceOrdersPage(AppShell shell, ServiceOrderService serviceOrderService,
-			ServiceOrderValidator serviceOrderValidator, ContractService contractService) {
+			ServiceOrderValidator serviceOrderValidator, ContractService contractService, AuditLog auditLog) {
 		this.shell = shell;
 		this.serviceOrderService = serviceOrderService;
 		this.serviceOrderValidator = serviceOrderValidator;
 		this.contractService = contractService;
+		this.auditLog = auditLog;
 		configureActions();
 		configureTable();
 		configurePagination();
@@ -539,10 +543,18 @@ public class ServiceOrdersPage implements Page {
 			boolean creating = existing == null;
 			Function<ServiceOrderForm, ServiceOrderDTO> saver;
 			if (creating) {
-				saver = form -> serviceOrderService.create(form.toCreateRequest());
+				saver = form -> {
+					ServiceOrderDTO saved = serviceOrderService.create(form.toCreateRequest());
+					auditLog.record(AuditLog.CREATE, AuditLog.SERVICE_ORDER, idOf(saved), form.toDetails());
+					return saved;
+				};
 			}
 			else {
-				saver = form -> serviceOrderService.update(existing.id(), form.toUpdateRequest());
+				saver = form -> {
+					ServiceOrderDTO saved = serviceOrderService.update(existing.id(), form.toUpdateRequest());
+					auditLog.record(AuditLog.UPDATE, AuditLog.SERVICE_ORDER, idOf(saved), form.toDetails());
+					return saved;
+				};
 			}
 
 			ServiceOrderFormDialog dialog = new ServiceOrderFormDialog(shell, serviceOrderValidator,
@@ -573,7 +585,12 @@ public class ServiceOrdersPage implements Page {
 		shell.clearError();
 		setBusy(true);
 		shell.setLoading(true);
-		FxAsync.run(() -> serviceOrderService.setStatus(order.id(), status), updated -> {
+		FxAsync.run(() -> {
+			ServiceOrderDTO updated = serviceOrderService.setStatus(order.id(), status);
+			auditLog.record(AuditLog.STATUS_CHANGE, AuditLog.SERVICE_ORDER, idOf(order),
+					Map.of("status", updated.status()));
+			return updated;
+		}, updated -> {
 			setBusy(false);
 			load();
 		}, failure -> {
@@ -594,6 +611,7 @@ public class ServiceOrdersPage implements Page {
 		shell.setLoading(true);
 		FxAsync.run(() -> {
 			serviceOrderService.delete(order.id());
+			auditLog.record(AuditLog.DELETE, AuditLog.SERVICE_ORDER, idOf(order), Map.of());
 			return Boolean.TRUE;
 		}, done -> {
 			setBusy(false);
@@ -728,6 +746,10 @@ public class ServiceOrdersPage implements Page {
 		newButton.setDisable(busy);
 		table.setDisable(busy);
 		statusFilter.setDisable(busy);
+	}
+
+	private String idOf(ServiceOrderDTO order) {
+		return order == null || order.id() == null ? null : order.id().toString();
 	}
 
 }

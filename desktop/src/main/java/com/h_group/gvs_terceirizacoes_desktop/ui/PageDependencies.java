@@ -1,8 +1,10 @@
 package com.h_group.gvs_terceirizacoes_desktop.ui;
 
+import com.h_group.gvs_terceirizacoes_desktop.service.AuditLog;
 import com.h_group.gvs_terceirizacoes_desktop.service.ClientService;
 import com.h_group.gvs_terceirizacoes_desktop.service.ContractService;
 import com.h_group.gvs_terceirizacoes_desktop.service.DashboardService;
+import com.h_group.gvs_terceirizacoes_desktop.service.HistoryService;
 import com.h_group.gvs_terceirizacoes_desktop.service.ProviderService;
 import com.h_group.gvs_terceirizacoes_desktop.service.ServiceOrderService;
 import com.h_group.gvs_terceirizacoes_desktop.validation.ClientValidator;
@@ -21,6 +23,8 @@ public record PageDependencies(
 		ContractService contractService,
 		ContractValidator contractValidator,
 		ServiceOrderService serviceOrderService,
-		ServiceOrderValidator serviceOrderValidator
+		ServiceOrderValidator serviceOrderValidator,
+		HistoryService historyService,
+		AuditLog auditLog
 ) {
 }

@@ -1,5 +1,6 @@
 package com.h_group.gvs_terceirizacoes_desktop.dto;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -9,6 +10,8 @@ public record ServiceOrderDTO(
 		ContractDTO contract,
 		String description,
 		LocalDate executionDate,
-		String status
+		String status,
+		Instant createdAt,
+		Instant updatedAt
 ) {
 }

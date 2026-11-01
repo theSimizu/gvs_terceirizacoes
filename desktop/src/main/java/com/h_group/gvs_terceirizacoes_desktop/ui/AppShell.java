@@ -62,7 +62,8 @@ public class AppShell {
 				new ProvidersPage(this, dependencies.providerService(), dependencies.providerValidator()));
 		pages.put("contratos", new ContractsPage(this, dependencies.contractService(),
 				dependencies.contractValidator(), dependencies.clientService(), dependencies.providerService()));
-		pages.put("ordens", new PlaceholderPage("Ordens de Serviço"));
+		pages.put("ordens", new ServiceOrdersPage(this, dependencies.serviceOrderService(),
+				dependencies.serviceOrderValidator(), dependencies.contractService()));
 		pages.put("historico", new PlaceholderPage("Auditoria"));
 		pages.put("usuarios", new PlaceholderPage("Usuários do Sistema"));
 	}

@@ -4,8 +4,7 @@
 
 JavaFX desktop client backed by Spring Boot (non-web), talking to the GVS REST API
 through Spring Cloud OpenFeign. Login, registration, a read-only dashboard, and client,
-provider, contract, service-order, and audit management are implemented; the user
-section is a placeholder.
+provider, contract, service-order, and audit management are implemented.
 
 - Java 25, Spring Boot 4.2.0-SNAPSHOT, JavaFX 25.0.5, Maven Wrapper.
 - Base package: `com.h_group.gvs_terceirizacoes_desktop`

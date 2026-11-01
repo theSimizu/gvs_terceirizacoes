@@ -66,7 +66,6 @@ public class AppShell {
 		pages.put("ordens", new ServiceOrdersPage(this, dependencies.serviceOrderService(),
 				dependencies.serviceOrderValidator(), dependencies.contractService(), dependencies.auditLog()));
 		pages.put("historico", new HistoryPage(this, dependencies.historyService()));
-		pages.put("usuarios", new PlaceholderPage("Usuários do Sistema"));
 	}
 
 	public Parent build() {

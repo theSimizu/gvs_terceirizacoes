@@ -101,18 +101,3 @@
 .auth-link:hover {
     -fx-underline: true;
 }
-
-.home-root {
-    -fx-background-color: radial-gradient(center 100% 0%, radius 100%, rgba(59, 130, 246, 0.20), #0b1121 55%);
-}
-
-.home-title {
-    -fx-text-fill: #f8fafc;
-    -fx-font-size: 28px;
-    -fx-font-weight: bold;
-}
-
-.home-subtitle {
-    -fx-text-fill: #94a3b8;
-    -fx-font-size: 14px;
-}

@@ -1,9 +1,11 @@
 package com.h_group.gvs_terceirizacoes_desktop.ui;
 
 import com.h_group.gvs_terceirizacoes_desktop.service.AuthService;
+import com.h_group.gvs_terceirizacoes_desktop.service.ClientService;
 import com.h_group.gvs_terceirizacoes_desktop.service.DashboardService;
 import com.h_group.gvs_terceirizacoes_desktop.session.AuthSession;
 import com.h_group.gvs_terceirizacoes_desktop.validation.AuthValidator;
+import com.h_group.gvs_terceirizacoes_desktop.validation.ClientValidator;
 import java.io.InputStream;
 import java.net.URL;
 import javafx.scene.Parent;
@@ -19,7 +21,7 @@ public class Navigator {
 
 	private static final String AUTH_STYLESHEET = "/css/auth.css";
 
-	private static final String DASHBOARD_STYLESHEET = "/css/dashboard.css";
+	private static final String APP_STYLESHEET = "/css/app.css";
 
 	private static final String LOGO = "/images/logo.png";
 
@@ -31,14 +33,20 @@ public class Navigator {
 
 	private final DashboardService dashboardService;
 
+	private final ClientService clientService;
+
+	private final ClientValidator clientValidator;
+
 	private Stage stage;
 
 	public Navigator(AuthService authService, AuthSession authSession, AuthValidator authValidator,
-			DashboardService dashboardService) {
+			DashboardService dashboardService, ClientService clientService, ClientValidator clientValidator) {
 		this.authService = authService;
 		this.authSession = authSession;
 		this.authValidator = authValidator;
 		this.dashboardService = dashboardService;
+		this.clientService = clientService;
+		this.clientValidator = clientValidator;
 	}
 
 	public void initialize(Stage stage) {
@@ -64,13 +72,14 @@ public class Navigator {
 	}
 
 	public void showHome() {
-		display(new DashboardView(this, authService, authSession, dashboardService).build());
+		display(new AppShell(this, authService, authSession, dashboardService, clientService, clientValidator)
+				.build());
 	}
 
 	private void display(Parent root) {
 		Scene scene = new Scene(root);
 		addStylesheet(scene, AUTH_STYLESHEET);
-		addStylesheet(scene, DASHBOARD_STYLESHEET);
+		addStylesheet(scene, APP_STYLESHEET);
 		stage.setScene(scene);
 		if (!stage.isShowing()) {
 			stage.show();

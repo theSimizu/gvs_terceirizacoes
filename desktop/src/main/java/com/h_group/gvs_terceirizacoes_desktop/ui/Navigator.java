@@ -3,9 +3,11 @@ package com.h_group.gvs_terceirizacoes_desktop.ui;
 import com.h_group.gvs_terceirizacoes_desktop.service.AuthService;
 import com.h_group.gvs_terceirizacoes_desktop.service.ClientService;
 import com.h_group.gvs_terceirizacoes_desktop.service.DashboardService;
+import com.h_group.gvs_terceirizacoes_desktop.service.ProviderService;
 import com.h_group.gvs_terceirizacoes_desktop.session.AuthSession;
 import com.h_group.gvs_terceirizacoes_desktop.validation.AuthValidator;
 import com.h_group.gvs_terceirizacoes_desktop.validation.ClientValidator;
+import com.h_group.gvs_terceirizacoes_desktop.validation.ProviderValidator;
 import java.io.InputStream;
 import java.net.URL;
 import javafx.scene.Parent;
@@ -37,16 +39,23 @@ public class Navigator {
 
 	private final ClientValidator clientValidator;
 
+	private final ProviderService providerService;
+
+	private final ProviderValidator providerValidator;
+
 	private Stage stage;
 
 	public Navigator(AuthService authService, AuthSession authSession, AuthValidator authValidator,
-			DashboardService dashboardService, ClientService clientService, ClientValidator clientValidator) {
+			DashboardService dashboardService, ClientService clientService, ClientValidator clientValidator,
+			ProviderService providerService, ProviderValidator providerValidator) {
 		this.authService = authService;
 		this.authSession = authSession;
 		this.authValidator = authValidator;
 		this.dashboardService = dashboardService;
 		this.clientService = clientService;
 		this.clientValidator = clientValidator;
+		this.providerService = providerService;
+		this.providerValidator = providerValidator;
 	}
 
 	public void initialize(Stage stage) {
@@ -72,8 +81,8 @@ public class Navigator {
 	}
 
 	public void showHome() {
-		display(new AppShell(this, authService, authSession, dashboardService, clientService, clientValidator)
-				.build());
+		display(new AppShell(this, authService, authSession, dashboardService, clientService, clientValidator,
+				providerService, providerValidator).build());
 	}
 
 	private void display(Parent root) {

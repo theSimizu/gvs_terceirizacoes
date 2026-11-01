@@ -17,6 +17,10 @@ public final class InputMasks {
 		return new TextFormatter<>(change -> applyMask(change, 11, InputMasks::formatPhone));
 	}
 
+	public static TextFormatter<String> cpfCnpj() {
+		return new TextFormatter<>(change -> applyMask(change, 14, InputMasks::formatCpfCnpj));
+	}
+
 	private static Change applyMask(Change change, int maxDigits, UnaryOperator<String> formatter) {
 		if (!change.isContentChange()) {
 			return change;
@@ -44,6 +48,24 @@ public final class InputMasks {
 				formatted.append('/');
 			}
 			if (i == 12) {
+				formatted.append('-');
+			}
+			formatted.append(digits.charAt(i));
+		}
+		return formatted.toString();
+	}
+
+	static String formatCpfCnpj(String digits) {
+		return digits.length() <= 11 ? formatCpf(digits) : formatCnpj(digits);
+	}
+
+	static String formatCpf(String digits) {
+		StringBuilder formatted = new StringBuilder();
+		for (int i = 0; i < digits.length(); i++) {
+			if (i == 3 || i == 6) {
+				formatted.append('.');
+			}
+			if (i == 9) {
 				formatted.append('-');
 			}
 			formatted.append(digits.charAt(i));

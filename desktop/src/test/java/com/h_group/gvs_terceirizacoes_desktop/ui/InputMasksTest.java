@@ -26,4 +26,19 @@ class InputMasksTest {
 		assertEquals("(11) 3456-7890", InputMasks.formatPhone("1134567890"));
 	}
 
+	@Test
+	void formatsElevenDigitCpf() {
+		assertEquals("123.456.789-01", InputMasks.formatCpf("12345678901"));
+	}
+
+	@Test
+	void formatsCpfCnpjAsCpfUpToElevenDigits() {
+		assertEquals("123.456.789-01", InputMasks.formatCpfCnpj("12345678901"));
+	}
+
+	@Test
+	void formatsCpfCnpjAsCnpjBeyondElevenDigits() {
+		assertEquals("12.345.678/0001-90", InputMasks.formatCpfCnpj("12345678000190"));
+	}
+
 }

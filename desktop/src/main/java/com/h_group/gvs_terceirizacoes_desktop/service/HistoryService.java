@@ -27,6 +27,9 @@ public class HistoryService {
 	private RuntimeException translate(RuntimeException exception) {
 		if (exception instanceof ApiException apiException) {
 			if (apiException.getStatus() == 400) {
+				if (apiException.hasValidationDetails()) {
+					return apiException;
+				}
 				return new ApiException("Verifique os dados informados.", 400);
 			}
 			return apiException;

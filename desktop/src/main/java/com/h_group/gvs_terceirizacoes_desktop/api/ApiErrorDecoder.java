@@ -24,6 +24,9 @@ public class ApiErrorDecoder implements ErrorDecoder {
 		if (status == 401) {
 			return new ApiException("E-mail ou senha incorretos.", status);
 		}
+		if (status == 403) {
+			return new ApiException("Seu perfil não permite esta operação.", status);
+		}
 		if (status >= 500) {
 			return new ApiException("Erro no servidor. Tente novamente mais tarde.", status);
 		}

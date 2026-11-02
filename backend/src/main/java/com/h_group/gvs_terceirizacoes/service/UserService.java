@@ -6,6 +6,7 @@ import com.h_group.gvs_terceirizacoes.dto.request.RegisterRequest;
 import com.h_group.gvs_terceirizacoes.dto.response.AuthResponse;
 import com.h_group.gvs_terceirizacoes.dto.response.UserResponse;
 import com.h_group.gvs_terceirizacoes.entity.User;
+import com.h_group.gvs_terceirizacoes.entity.UserRole;
 import com.h_group.gvs_terceirizacoes.exception.ApiException;
 import com.h_group.gvs_terceirizacoes.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -44,6 +46,7 @@ public class UserService {
         user.setName(request.name().trim());
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(request.password()));
+        user.setRole(UserRole.USER);
 
         return UserResponse.from(userRepository.save(user));
     }
@@ -63,5 +66,11 @@ public class UserService {
 
     private String normalizeEmail(String email) {
         return email.trim().toLowerCase(Locale.ROOT);
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponse currentUser(UUID id) {
+        return UserResponse.from(userRepository.findById(id)
+                .orElseThrow(() -> new ApiException("User not found", HttpStatus.UNAUTHORIZED)));
     }
 }

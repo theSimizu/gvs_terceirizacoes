@@ -25,6 +25,10 @@ public class AuthSession {
 		return token != null && !token.isBlank();
 	}
 
+	public synchronized boolean isAdministrator() {
+		return isAuthenticated() && user != null && user.isAdministrator();
+	}
+
 	public synchronized void clear() {
 		this.token = null;
 		this.user = null;

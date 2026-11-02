@@ -147,6 +147,8 @@ public class ClientsPage implements Page {
 	}
 
 	private void configureActions() {
+		newButton.setVisible(shell.canManageRegistries());
+		newButton.setManaged(shell.canManageRegistries());
 		refreshButton.getStyleClass().add("btn-secondary");
 		refreshButton.setOnAction(event -> load());
 
@@ -221,6 +223,7 @@ public class ClientsPage implements Page {
 
 	private TableColumn<ClientDTO, Void> actionsColumn() {
 		TableColumn<ClientDTO, Void> column = new TableColumn<>();
+		column.setVisible(shell.canManageRegistries());
 		Label title = new Label("Ações");
 		title.getStyleClass().add("column-header-label");
 		column.setGraphic(title);

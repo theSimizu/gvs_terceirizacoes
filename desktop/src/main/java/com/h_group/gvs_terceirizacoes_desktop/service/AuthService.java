@@ -77,8 +77,23 @@ public class AuthService {
 			tokenStore.clear();
 			return false;
 		}
-		authSession.store(session.token(), session.user());
-		return true;
+		authSession.store(session.token(), null);
+		try {
+			UserDTO user = authClient.currentUser();
+			if (user == null || user.role() == null) {
+				authSession.clear();
+				return false;
+			}
+			authSession.store(session.token(), user);
+			persist(session.token(), user);
+			return true;
+		} catch (RuntimeException exception) {
+			authSession.clear();
+			if (exception instanceof ApiException apiException && apiException.getStatus() == 401) {
+				tokenStore.clear();
+			}
+			return false;
+		}
 	}
 
 	public void logout() {

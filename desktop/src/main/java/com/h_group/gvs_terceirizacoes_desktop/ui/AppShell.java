@@ -118,6 +118,14 @@ public class AppShell {
 		navigator.showLogin("Sessão expirada. Faça login novamente.");
 	}
 
+	public boolean canManageRegistries() {
+		return authSession.isAdministrator();
+	}
+
+	public boolean canDelete() {
+		return authSession.isAdministrator();
+	}
+
 	private VBox buildSidebar() {
 		VBox header = new VBox(createLogo());
 		header.getStyleClass().add("sidebar-header");
@@ -158,7 +166,7 @@ public class AppShell {
 		Label name = new Label(displayName());
 		name.getStyleClass().add("user-name");
 
-		Label role = new Label("GVS Terceirizações");
+		Label role = new Label(authSession.isAdministrator() ? "Administrador" : "Usuário");
 		role.getStyleClass().add("user-role");
 
 		VBox details = new VBox(2, name, role);
@@ -214,7 +222,7 @@ public class AppShell {
 		if (user != null && user.name() != null && !user.name().isBlank()) {
 			return user.name();
 		}
-		return "Administrador";
+		return "Usuário";
 	}
 
 	private String initials() {

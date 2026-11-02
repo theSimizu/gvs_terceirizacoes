@@ -1,8 +1,9 @@
 package com.h_group.gvs_terceirizacoes_desktop.ui;
 
 import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
+import com.h_group.gvs_terceirizacoes_desktop.dto.DashboardSummary;
 import com.h_group.gvs_terceirizacoes_desktop.service.DashboardService;
-import com.h_group.gvs_terceirizacoes_desktop.service.DashboardSummary;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javafx.geometry.Side;

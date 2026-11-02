@@ -6,8 +6,12 @@ import com.h_group.gvs_terceirizacoes_desktop.api.ProviderClient;
 import com.h_group.gvs_terceirizacoes_desktop.api.ServiceOrderClient;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ClientDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ContractDTO;
+import com.h_group.gvs_terceirizacoes_desktop.dto.DashboardSummary;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ProviderDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ServiceOrderDTO;
+
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -16,25 +20,14 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class DashboardService {
-
 	private static final String ACTIVE_STATUS = "active";
 
 	private final ClientClient clientClient;
-
 	private final ProviderClient providerClient;
-
 	private final ContractClient contractClient;
-
 	private final ServiceOrderClient serviceOrderClient;
-
-	public DashboardService(ClientClient clientClient, ProviderClient providerClient, ContractClient contractClient,
-			ServiceOrderClient serviceOrderClient) {
-		this.clientClient = clientClient;
-		this.providerClient = providerClient;
-		this.contractClient = contractClient;
-		this.serviceOrderClient = serviceOrderClient;
-	}
 
 	public DashboardSummary loadSummary() {
 		List<ClientDTO> clients = clientClient.findAll();

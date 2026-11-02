@@ -6,28 +6,24 @@ import com.h_group.gvs_terceirizacoes_desktop.dto.CreateProviderRequest;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ProviderDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.UpdateProviderRequest;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ProviderService {
-
-	private static final String CONNECTION_ERROR =
-			"Não foi possível conectar ao servidor. Verifique sua conexão.";
+	private static final String CONNECTION_ERROR = "Não foi possível conectar ao servidor. Verifique sua conexão.";
 
 	private final ProviderClient providerClient;
-
-	public ProviderService(ProviderClient providerClient) {
-		this.providerClient = providerClient;
-	}
 
 	public List<ProviderDTO> findAll() {
 		try {
 			return providerClient.findAll();
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível carregar os prestadores.");
 		}
 	}
@@ -35,8 +31,7 @@ public class ProviderService {
 	public ProviderDTO create(CreateProviderRequest request) {
 		try {
 			return providerClient.create(request);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível cadastrar o prestador.");
 		}
 	}
@@ -44,8 +39,7 @@ public class ProviderService {
 	public ProviderDTO update(UUID id, UpdateProviderRequest request) {
 		try {
 			return providerClient.update(id, request);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível atualizar o prestador.");
 		}
 	}
@@ -57,8 +51,7 @@ public class ProviderService {
 	public void delete(UUID id) {
 		try {
 			providerClient.delete(id);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível excluir o prestador.");
 		}
 	}

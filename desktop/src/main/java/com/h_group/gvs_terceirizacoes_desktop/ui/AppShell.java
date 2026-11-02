@@ -28,28 +28,22 @@ public class AppShell {
 	private static final String DASHBOARD = "dashboard";
 
 	private final Navigator navigator;
-
 	private final AuthService authService;
-
 	private final AuthSession authSession;
 
 	private final Map<String, Page> pages = new LinkedHashMap<>();
-
 	private final Map<String, Node> builtPages = new HashMap<>();
-
 	private final List<Button> navButtons = new ArrayList<>();
-
 	private final Label pageTitle = new Label();
-
 	private final HBox actionBox = new HBox(12);
-
 	private final Label loadingLabel = new Label("Carregando dados...");
-
 	private final Label messageLabel = new Label();
-
 	private final StackPane contentHost = new StackPane();
 
-	public AppShell(Navigator navigator, AuthService authService, AuthSession authSession,
+	public AppShell(
+			Navigator navigator,
+			AuthService authService,
+			AuthSession authSession,
 			PageDependencies dependencies) {
 		this.navigator = navigator;
 		this.authService = authService;
@@ -247,8 +241,7 @@ public class AppShell {
 				view.setSmooth(true);
 				return view;
 			}
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			// Ignore a missing or invalid logo.
 		}
 		return new ImageView();

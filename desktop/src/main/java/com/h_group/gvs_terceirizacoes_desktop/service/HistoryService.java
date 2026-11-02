@@ -4,26 +4,22 @@ import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
 import com.h_group.gvs_terceirizacoes_desktop.api.HistoryClient;
 import com.h_group.gvs_terceirizacoes_desktop.dto.HistoryDTO;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class HistoryService {
-
-	private static final String CONNECTION_ERROR =
-			"Não foi possível conectar ao servidor. Verifique sua conexão.";
+	private static final String CONNECTION_ERROR = "Não foi possível conectar ao servidor. Verifique sua conexão.";
 
 	private final HistoryClient historyClient;
-
-	public HistoryService(HistoryClient historyClient) {
-		this.historyClient = historyClient;
-	}
 
 	public List<HistoryDTO> findAll() {
 		try {
 			return historyClient.findAll();
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception);
 		}
 	}

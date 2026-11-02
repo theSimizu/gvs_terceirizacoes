@@ -20,6 +20,7 @@ public final class ServiceOrderStatuses {
 
 	private static final Map<String, String> BADGES = new LinkedHashMap<>();
 
+
 	static {
 		LABELS.put(PENDING, "Pendente");
 		LABELS.put(IN_PROGRESS, "Em Andamento");

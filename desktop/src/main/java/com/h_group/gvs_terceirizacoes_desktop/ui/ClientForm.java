@@ -11,8 +11,7 @@ public record ClientForm(
 		String cnpj,
 		String email,
 		String phone,
-		String status
-) {
+		String status) {
 
 	public CreateClientRequest toCreateRequest() {
 		return new CreateClientRequest(legalName, cnpj, email, phone, null, status);

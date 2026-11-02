@@ -3,17 +3,15 @@ package com.h_group.gvs_terceirizacoes_desktop.session;
 import java.time.Instant;
 import java.util.Base64;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @Component
+@RequiredArgsConstructor
 public class JwtExpiry {
-
 	private final ObjectMapper objectMapper;
-
-	public JwtExpiry(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
 
 	public boolean isExpired(String token) {
 		return isExpired(token, Instant.now());
@@ -43,8 +41,7 @@ public class JwtExpiry {
 				return null;
 			}
 			return expiration.asLong();
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			return null;
 		}
 	}

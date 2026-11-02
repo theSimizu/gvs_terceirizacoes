@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.h_group.gvs_terceirizacoes_desktop.config.SessionProperties;
+import com.h_group.gvs_terceirizacoes_desktop.dto.StoredSession;
 import com.h_group.gvs_terceirizacoes_desktop.dto.UserDTO;
 import java.nio.file.Files;
 import java.nio.file.Path;

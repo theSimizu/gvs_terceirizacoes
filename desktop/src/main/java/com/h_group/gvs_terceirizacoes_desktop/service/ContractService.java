@@ -6,32 +6,26 @@ import com.h_group.gvs_terceirizacoes_desktop.dto.ContractDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.CreateContractRequest;
 import com.h_group.gvs_terceirizacoes_desktop.dto.UpdateContractRequest;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ContractService {
-
 	private static final String ACTIVE = "active";
-
 	private static final String CLOSED = "closed";
-
-	private static final String CONNECTION_ERROR =
-			"Não foi possível conectar ao servidor. Verifique sua conexão.";
+	private static final String CONNECTION_ERROR = "Não foi possível conectar ao servidor. Verifique sua conexão.";
 
 	private final ContractClient contractClient;
-
-	public ContractService(ContractClient contractClient) {
-		this.contractClient = contractClient;
-	}
 
 	public List<ContractDTO> findAll() {
 		try {
 			return contractClient.findAll();
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível carregar os contratos.");
 		}
 	}
@@ -39,8 +33,7 @@ public class ContractService {
 	public ContractDTO create(CreateContractRequest request) {
 		try {
 			return contractClient.create(request);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível cadastrar o contrato.");
 		}
 	}
@@ -48,8 +41,7 @@ public class ContractService {
 	public ContractDTO update(UUID id, UpdateContractRequest request) {
 		try {
 			return contractClient.update(id, request);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível atualizar o contrato.");
 		}
 	}
@@ -65,8 +57,7 @@ public class ContractService {
 	public void delete(UUID id) {
 		try {
 			contractClient.delete(id);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível excluir o contrato.");
 		}
 	}

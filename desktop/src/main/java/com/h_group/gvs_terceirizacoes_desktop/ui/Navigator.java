@@ -9,36 +9,24 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class Navigator {
-
 	private static final String TITLE = "GVS Terceirizações";
-
 	private static final String AUTH_STYLESHEET = "/css/auth.css";
-
 	private static final String APP_STYLESHEET = "/css/app.css";
-
 	private static final String LOGO = "/images/logo.png";
 
 	private final AuthService authService;
-
 	private final AuthSession authSession;
-
 	private final AuthValidator authValidator;
-
 	private final PageDependencies dependencies;
 
 	private Stage stage;
-
-	public Navigator(AuthService authService, AuthSession authSession, AuthValidator authValidator,
-			PageDependencies dependencies) {
-		this.authService = authService;
-		this.authSession = authSession;
-		this.authValidator = authValidator;
-		this.dependencies = dependencies;
-	}
 
 	public void initialize(Stage stage) {
 		this.stage = stage;
@@ -89,8 +77,7 @@ public class Navigator {
 			if (stream != null) {
 				stage.getIcons().add(new Image(stream));
 			}
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			// The icon is decorative; ignore failures.
 		}
 	}

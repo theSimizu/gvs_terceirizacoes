@@ -1,4 +1,4 @@
-package com.h_group.gvs_terceirizacoes_desktop.service;
+package com.h_group.gvs_terceirizacoes_desktop.dto;
 
 import java.util.Map;
 

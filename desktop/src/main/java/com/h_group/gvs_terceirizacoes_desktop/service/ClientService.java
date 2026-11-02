@@ -6,28 +6,24 @@ import com.h_group.gvs_terceirizacoes_desktop.dto.ClientDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.CreateClientRequest;
 import com.h_group.gvs_terceirizacoes_desktop.dto.UpdateClientRequest;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ClientService {
-
-	private static final String CONNECTION_ERROR =
-			"Não foi possível conectar ao servidor. Verifique sua conexão.";
+	private static final String CONNECTION_ERROR = "Não foi possível conectar ao servidor. Verifique sua conexão.";
 
 	private final ClientClient clientClient;
-
-	public ClientService(ClientClient clientClient) {
-		this.clientClient = clientClient;
-	}
 
 	public List<ClientDTO> findAll() {
 		try {
 			return clientClient.findAll();
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível carregar os clientes.");
 		}
 	}
@@ -35,8 +31,7 @@ public class ClientService {
 	public ClientDTO create(CreateClientRequest request) {
 		try {
 			return clientClient.create(request);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível cadastrar o cliente.");
 		}
 	}
@@ -44,8 +39,7 @@ public class ClientService {
 	public ClientDTO update(UUID id, UpdateClientRequest request) {
 		try {
 			return clientClient.update(id, request);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível atualizar o cliente.");
 		}
 	}
@@ -53,8 +47,7 @@ public class ClientService {
 	public void delete(UUID id) {
 		try {
 			clientClient.delete(id);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível excluir o cliente.");
 		}
 	}

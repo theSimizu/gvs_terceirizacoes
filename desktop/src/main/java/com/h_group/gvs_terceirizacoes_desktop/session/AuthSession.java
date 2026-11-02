@@ -5,9 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthSession {
-
 	private String token;
-
 	private UserDTO user;
 
 	public synchronized void store(String token, UserDTO user) {

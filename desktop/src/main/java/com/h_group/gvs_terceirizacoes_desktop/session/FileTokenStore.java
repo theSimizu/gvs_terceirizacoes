@@ -1,6 +1,10 @@
 package com.h_group.gvs_terceirizacoes_desktop.session;
 
 import com.h_group.gvs_terceirizacoes_desktop.config.SessionProperties;
+import com.h_group.gvs_terceirizacoes_desktop.dto.StoredSession;
+
+import lombok.RequiredArgsConstructor;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -15,20 +19,13 @@ import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
 @Component
+@RequiredArgsConstructor
 public class FileTokenStore implements TokenStore {
-
 	private static final Logger log = LoggerFactory.getLogger(FileTokenStore.class);
-
 	private static final Set<PosixFilePermission> OWNER_ONLY = PosixFilePermissions.fromString("rw-------");
 
 	private final SessionProperties properties;
-
 	private final ObjectMapper objectMapper;
-
-	public FileTokenStore(SessionProperties properties, ObjectMapper objectMapper) {
-		this.properties = properties;
-		this.objectMapper = objectMapper;
-	}
 
 	@Override
 	public Optional<StoredSession> load() {
@@ -43,8 +40,7 @@ public class FileTokenStore implements TokenStore {
 				return Optional.empty();
 			}
 			return Optional.of(session);
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			log.warn("Could not read the stored session; ignoring it: {}", exception.getMessage());
 			return Optional.empty();
 		}
@@ -61,8 +57,7 @@ public class FileTokenStore implements TokenStore {
 			String content = objectMapper.writeValueAsString(session);
 			Files.writeString(file, content);
 			restrictPermissions(file);
-		}
-		catch (IOException exception) {
+		} catch (IOException exception) {
 			throw new UncheckedIOException("Could not store the session.", exception);
 		}
 	}
@@ -72,8 +67,7 @@ public class FileTokenStore implements TokenStore {
 		Path file = properties.getFile();
 		try {
 			Files.deleteIfExists(file);
-		}
-		catch (IOException exception) {
+		} catch (IOException exception) {
 			log.warn("Could not delete the stored session.", exception);
 		}
 	}
@@ -84,8 +78,7 @@ public class FileTokenStore implements TokenStore {
 				return;
 			}
 			Files.setPosixFilePermissions(file, OWNER_ONLY);
-		}
-		catch (IOException exception) {
+		} catch (IOException exception) {
 			log.warn("Could not restrict the stored session permissions.", exception);
 		}
 	}

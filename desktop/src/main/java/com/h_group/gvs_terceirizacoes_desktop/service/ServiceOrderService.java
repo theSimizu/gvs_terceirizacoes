@@ -6,28 +6,24 @@ import com.h_group.gvs_terceirizacoes_desktop.dto.CreateServiceOrderRequest;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ServiceOrderDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.UpdateServiceOrderRequest;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ServiceOrderService {
-
-	private static final String CONNECTION_ERROR =
-			"Não foi possível conectar ao servidor. Verifique sua conexão.";
+	private static final String CONNECTION_ERROR = "Não foi possível conectar ao servidor. Verifique sua conexão.";
 
 	private final ServiceOrderClient serviceOrderClient;
-
-	public ServiceOrderService(ServiceOrderClient serviceOrderClient) {
-		this.serviceOrderClient = serviceOrderClient;
-	}
 
 	public List<ServiceOrderDTO> findAll() {
 		try {
 			return serviceOrderClient.findAll();
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível carregar as ordens de serviço.");
 		}
 	}
@@ -35,8 +31,7 @@ public class ServiceOrderService {
 	public ServiceOrderDTO create(CreateServiceOrderRequest request) {
 		try {
 			return serviceOrderClient.create(request);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível registrar a ordem de serviço.");
 		}
 	}
@@ -44,8 +39,7 @@ public class ServiceOrderService {
 	public ServiceOrderDTO update(UUID id, UpdateServiceOrderRequest request) {
 		try {
 			return serviceOrderClient.update(id, request);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível atualizar a ordem de serviço.");
 		}
 	}
@@ -57,8 +51,7 @@ public class ServiceOrderService {
 	public void delete(UUID id) {
 		try {
 			serviceOrderClient.delete(id);
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			throw translate(exception, "Não foi possível excluir a ordem de serviço.");
 		}
 	}

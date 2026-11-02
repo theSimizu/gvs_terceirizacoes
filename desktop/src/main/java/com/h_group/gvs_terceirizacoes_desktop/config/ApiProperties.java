@@ -5,11 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "gvs.api")
 public class ApiProperties {
-
 	private String baseUrl = "http://localhost:8080/api";
-
 	private Duration connectTimeout = Duration.ofSeconds(5);
-
 	private Duration readTimeout = Duration.ofSeconds(15);
 
 	public String getBaseUrl() {

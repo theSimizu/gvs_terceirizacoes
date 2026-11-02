@@ -40,6 +40,7 @@ public final class InputMasks {
 			}
 			change.setRange(0, change.getControlText().length());
 			change.setText(masked);
+			change.selectRange(masked.length(), masked.length());
 			return change;
 		});
 	}
@@ -63,8 +64,13 @@ public final class InputMasks {
 		return new BigDecimal(digits).movePointLeft(2);
 	}
 
-	private static String formatCents(String digits) {
-		String padded = digits.length() < 3 ? "0".repeat(3 - digits.length()) + digits : digits;
+	static String formatCents(String digits) {
+		int start = 0;
+		while (start < digits.length() - 1 && digits.charAt(start) == '0') {
+			start++;
+		}
+		String normalized = digits.substring(start);
+		String padded = normalized.length() < 3 ? "0".repeat(3 - normalized.length()) + normalized : normalized;
 		String cents = padded.substring(padded.length() - 2);
 		String units = padded.substring(0, padded.length() - 2);
 
@@ -84,17 +90,47 @@ public final class InputMasks {
 		if (!change.isContentChange()) {
 			return change;
 		}
-		String digits = change.getControlNewText().replaceAll("\\D", "");
+		String rawText = change.getControlNewText();
+		int rawCaret = change.getCaretPosition();
+		String digits = rawText.replaceAll("\\D", "");
 		if (digits.length() > maxDigits) {
 			digits = digits.substring(0, maxDigits);
 		}
 		String masked = formatter.apply(digits);
-		if (masked.equals(change.getControlNewText())) {
+		if (masked.equals(rawText)) {
 			return change;
 		}
 		change.setRange(0, change.getControlText().length());
 		change.setText(masked);
+		int caret = caretFor(rawText, rawCaret, masked);
+		change.selectRange(caret, caret);
 		return change;
+	}
+
+	static int caretFor(String rawText, int rawCaret, String masked) {
+		if (rawText == null || masked == null) {
+			return 0;
+		}
+		int limit = Math.max(0, Math.min(rawCaret, rawText.length()));
+		int digitsBefore = 0;
+		for (int i = 0; i < limit; i++) {
+			if (Character.isDigit(rawText.charAt(i))) {
+				digitsBefore++;
+			}
+		}
+		if (digitsBefore == 0) {
+			return 0;
+		}
+		int seen = 0;
+		for (int i = 0; i < masked.length(); i++) {
+			if (Character.isDigit(masked.charAt(i))) {
+				seen++;
+				if (seen == digitsBefore) {
+					return i + 1;
+				}
+			}
+		}
+		return masked.length();
 	}
 
 	static String formatCnpj(String digits) {

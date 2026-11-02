@@ -68,6 +68,9 @@ public class ClientService {
 				return new ApiException("Cliente não encontrado. Atualize a lista.", 404);
 			}
 			if (status == 400) {
+				if (apiException.hasValidationDetails()) {
+					return apiException;
+				}
 				return new ApiException("Verifique os dados informados.", 400);
 			}
 			return apiException;

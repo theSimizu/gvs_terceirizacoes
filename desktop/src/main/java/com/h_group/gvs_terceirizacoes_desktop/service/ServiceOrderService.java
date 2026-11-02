@@ -68,6 +68,9 @@ public class ServiceOrderService {
 				return new ApiException("Ordem de serviço não encontrada. Atualize a lista.", 404);
 			}
 			if (status == 400) {
+				if (apiException.hasValidationDetails()) {
+					return apiException;
+				}
 				return new ApiException("Verifique os dados informados.", 400);
 			}
 			return apiException;

@@ -13,6 +13,10 @@ import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
+/**
+ * Encaminha operações de clientes pelo Feign e traduz falhas para a interface.
+ * Mantém os detalhes de validação e distingue documento duplicado de conflito de vínculo.
+ */
 @Service
 @RequiredArgsConstructor
 public class ClientService {
@@ -68,6 +72,9 @@ public class ClientService {
 				return new ApiException("Cliente não encontrado. Atualize a lista.", 404);
 			}
 			if (status == 400) {
+				if (apiException.hasValidationDetails()) {
+					return apiException;
+				}
 				return new ApiException("Verifique os dados informados.", 400);
 			}
 			return apiException;

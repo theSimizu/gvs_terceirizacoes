@@ -13,6 +13,10 @@ import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
+/**
+ * Encaminha operações de ordens e atualização parcial de status.
+ * Mantém a distinção entre ordem inexistente e contrato associado inexistente.
+ */
 @Service
 @RequiredArgsConstructor
 public class ServiceOrderService {
@@ -68,6 +72,9 @@ public class ServiceOrderService {
 				return new ApiException("Ordem de serviço não encontrada. Atualize a lista.", 404);
 			}
 			if (status == 400) {
+				if (apiException.hasValidationDetails()) {
+					return apiException;
+				}
 				return new ApiException("Verifique os dados informados.", 400);
 			}
 			return apiException;

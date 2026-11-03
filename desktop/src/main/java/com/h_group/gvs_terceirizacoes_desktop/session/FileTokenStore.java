@@ -18,6 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
+/**
+ * Persiste a sessão em JSON no caminho configurado.
+ * Ignora conteúdo inválido na leitura. Restringe permissões em sistemas POSIX
+ * quando suportado; não configura ACLs específicas do Windows.
+ */
 @Component
 @RequiredArgsConstructor
 public class FileTokenStore implements TokenStore {

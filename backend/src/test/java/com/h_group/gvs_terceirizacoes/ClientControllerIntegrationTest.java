@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.UUID;
+import com.h_group.gvs_terceirizacoes.entity.UserRole;
+import com.h_group.gvs_terceirizacoes.repository.UserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,6 +35,9 @@ class ClientControllerIntegrationTest {
 
     private String token;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeAll
     void authenticate() throws Exception {
         String email = "client-suite-" + UUID.randomUUID() + "@example.com";
@@ -47,6 +52,10 @@ class ClientControllerIntegrationTest {
                                 }
                                 """.formatted(email)))
                 .andExpect(status().isCreated());
+
+        var admin = userRepository.findByEmailIgnoreCase(email).orElseThrow();
+        admin.setRole(UserRole.ADM);
+        userRepository.save(admin);
 
         MvcResult result = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)

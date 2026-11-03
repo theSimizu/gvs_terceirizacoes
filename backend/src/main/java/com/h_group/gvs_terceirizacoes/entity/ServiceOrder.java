@@ -21,6 +21,11 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Ordem de serviço pertencente a um contrato.
+ * Mantém descrição, data de execução, situação e timestamps; a execução por
+ * prestações e equipes não está representada nesta entidade.
+ */
 @Entity
 @Table(name = "service_orders")
 @Getter

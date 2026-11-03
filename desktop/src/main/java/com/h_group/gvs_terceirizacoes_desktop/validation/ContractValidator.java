@@ -6,6 +6,10 @@ import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 
+/**
+ * Validação antecipada dos vínculos, período e valor de um contrato.
+ * A aplicação desta regra na tela não substitui uma validação correspondente no servidor.
+ */
 @Component
 public class ContractValidator {
 

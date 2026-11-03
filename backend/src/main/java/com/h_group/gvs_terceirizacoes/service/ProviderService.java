@@ -13,6 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Mantém prestadores e verifica conflitos do documento informado.
+ * Disponibilidade representa disponível/ocupado; não é um indicador de inativação.
+ * A implementação atual usa cadastro genérico, sem subtipos de prestador.
+ */
 @Service
 public class ProviderService {
 
@@ -22,6 +27,10 @@ public class ProviderService {
         this.providerRepository = providerRepository;
     }
 
+    /**
+     * Lista prestadores e converte as entidades dentro da transação de leitura.
+     * @return registros disponíveis na base
+     */
     @Transactional(readOnly = true)
     public List<ProviderResponse> findAll() {
         return providerRepository.findAll()
@@ -30,11 +39,23 @@ public class ProviderService {
                 .toList();
     }
 
+    /**
+     * Consulta um registro pelo identificador.
+     * @param id identificador persistido
+     * @return representação pública do registro
+     * @throws com.h_group.gvs_terceirizacoes.exception.ApiException se não existir
+     */
     @Transactional(readOnly = true)
     public ProviderResponse findById(UUID id) {
         return ProviderResponse.from(getEntity(id));
     }
 
+    /**
+     * Cria um registro usando a transação do serviço.
+     * @param request dados validados na entrada HTTP
+     * @return registro criado
+     * @throws com.h_group.gvs_terceirizacoes.exception.ApiException se houver conflito ou vínculo inexistente
+     */
     @Transactional
     public ProviderResponse create(CreateProviderRequest request) {
         String taxId = request.taxId().trim();
@@ -54,6 +75,12 @@ public class ProviderService {
         return ProviderResponse.from(providerRepository.save(provider));
     }
 
+    /**
+     * Atualiza os campos não nulos enviados; campos ausentes preservam o valor atual.
+     * @param id identificador persistido
+     * @param request alterações recebidas
+     * @return representação atualizada
+     */
     @Transactional
     public ProviderResponse update(UUID id, UpdateProviderRequest request) {
         Provider provider = getEntity(id);
@@ -88,6 +115,10 @@ public class ProviderService {
         return ProviderResponse.from(providerRepository.save(provider));
     }
 
+    /**
+     * Solicita exclusão física do registro; relacionamentos podem impedir a operação.
+     * @param id identificador persistido
+     */
     @Transactional
     public void delete(UUID id) {
         Provider provider = getEntity(id);

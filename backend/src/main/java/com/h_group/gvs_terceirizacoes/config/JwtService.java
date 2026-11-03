@@ -13,6 +13,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
+/**
+ * Emite e verifica tokens JWT assinados com HS256.
+ * O prazo vem da configuração. A autorização considera o perfil atual do banco,
+ * mesmo quando o token contém um perfil emitido anteriormente.
+ */
 @Service
 public class JwtService {
 
@@ -31,6 +36,11 @@ public class JwtService {
         this.expirationMs = expirationMs;
     }
 
+    /**
+     * Emite um token assinado para uma conta persistida.
+     * @param user conta autenticada
+     * @return token com identidade, perfil e prazo configurado
+     */
     public String generateToken(User user) {
         Date issuedAt = new Date();
         Date expiration = new Date(issuedAt.getTime() + expirationMs);
@@ -39,12 +49,20 @@ public class JwtService {
                 .subject(user.getId().toString())
                 .claim("name", user.getName())
                 .claim("email", user.getEmail())
+                .claim("role", user.getRole().value())
                 .issuedAt(issuedAt)
                 .expiration(expiration)
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
     }
 
+    /**
+     * Verifica assinatura e validade temporal antes de retornar os claims.
+     * @param token JWT recebido na requisição
+     * @return claims verificados
+     * @throws io.jsonwebtoken.JwtException quando o token é inválido ou expirou
+     * @throws IllegalArgumentException quando a entrada não é aceitável
+     */
     public Claims parseToken(String token) {
         return Jwts.parser()
                 .verifyWith(key)

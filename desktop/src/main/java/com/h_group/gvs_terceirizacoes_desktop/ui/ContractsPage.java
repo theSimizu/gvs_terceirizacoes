@@ -160,6 +160,8 @@ public class ContractsPage implements Page {
 	}
 
 	private void configureActions() {
+		newButton.setVisible(shell.canManageRegistries());
+		newButton.setManaged(shell.canManageRegistries());
 		refreshButton.getStyleClass().add("btn-secondary");
 		refreshButton.setOnAction(event -> load());
 
@@ -279,6 +281,7 @@ public class ContractsPage implements Page {
 
 	private TableColumn<ContractDTO, Void> actionsColumn() {
 		TableColumn<ContractDTO, Void> column = new TableColumn<>();
+		column.setVisible(shell.canManageRegistries());
 		Label title = new Label("Ações");
 		title.getStyleClass().add("column-header-label");
 		column.setGraphic(title);

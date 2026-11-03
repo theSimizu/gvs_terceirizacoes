@@ -13,6 +13,10 @@ import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
+/**
+ * Encaminha operações de prestadores e traduz conflitos de documento e vínculo.
+ * A mudança de disponibilidade utiliza uma atualização parcial do cadastro.
+ */
 @Service
 @RequiredArgsConstructor
 public class ProviderService {
@@ -72,6 +76,9 @@ public class ProviderService {
 				return new ApiException("Prestador não encontrado. Atualize a lista.", 404);
 			}
 			if (status == 400) {
+				if (apiException.hasValidationDetails()) {
+					return apiException;
+				}
 				return new ApiException("Verifique os dados informados.", 400);
 			}
 			return apiException;

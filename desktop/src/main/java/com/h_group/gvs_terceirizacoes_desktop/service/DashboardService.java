@@ -19,6 +19,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
+/**
+ * Calcula os indicadores do painel a partir das listas recebidas da API.
+ * As agregações ocorrem no desktop; não representam consultas paginadas no banco
+ * nem validação de desempenho com grande volume.
+ */
 @Service
 @RequiredArgsConstructor
 public class DashboardService {
@@ -29,6 +34,10 @@ public class DashboardService {
 	private final ContractClient contractClient;
 	private final ServiceOrderClient serviceOrderClient;
 
+	/**
+	 * Obtém listas da API e calcula contagens e distribuições para o painel.
+	 * @return indicadores calculados no desktop
+	 */
 	public DashboardSummary loadSummary() {
 		List<ClientDTO> clients = clientClient.findAll();
 		List<ProviderDTO> providers = providerClient.findAll();

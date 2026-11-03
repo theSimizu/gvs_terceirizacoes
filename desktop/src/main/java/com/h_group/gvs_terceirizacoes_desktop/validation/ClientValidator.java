@@ -4,6 +4,10 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
+/**
+ * Validação antecipada do formulário de cliente.
+ * Confere presença, tamanho de CNPJ, e-mail e telefone; não calcula os dígitos verificadores.
+ */
 @Component
 public class ClientValidator {
 

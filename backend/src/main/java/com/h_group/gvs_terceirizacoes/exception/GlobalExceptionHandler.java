@@ -16,6 +16,11 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.List;
 
+/**
+ * Converte falhas de domínio, validação e persistência em respostas HTTP.
+ * As mensagens de validação são separadas por campo; falhas inesperadas recebem
+ * uma resposta genérica, preservando os detalhes no log do servidor.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

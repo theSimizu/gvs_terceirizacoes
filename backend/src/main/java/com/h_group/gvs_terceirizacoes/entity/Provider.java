@@ -12,6 +12,10 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+/**
+ * Cadastro de prestador, documento, especialidade, contato e disponibilidade.
+ * O modelo atual não distingue funcionário de empresa parceira.
+ */
 @Entity
 @Table(name = "providers")
 @Getter

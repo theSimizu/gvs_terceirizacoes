@@ -8,6 +8,11 @@ import lombok.RequiredArgsConstructor;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
+/**
+ * Solicita a gravação de eventos após operações realizadas pelo desktop.
+ * Falhas no histórico não interrompem a operação principal. Este mecanismo é
+ * auxiliar e não garante auditoria completa das alterações da API.
+ */
 @Component
 @RequiredArgsConstructor
 public class AuditLog {
@@ -22,6 +27,13 @@ public class AuditLog {
 
 	private final HistoryClient historyClient;
 
+	/**
+	 * Solicita um evento e tolera falhas para não interromper a operação principal.
+	 * @param action ação registrada
+	 * @param entity tipo de entidade
+	 * @param documentId identificador do registro relacionado
+	 * @param details detalhes auxiliares, quando disponíveis
+	 */
 	public void record(String action, String entity, String documentId, Map<String, Object> details) {
 		try {
 			historyClient.create(new CreateHistoryRequest(action, entity, documentId, details, null));

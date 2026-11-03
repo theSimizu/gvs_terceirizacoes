@@ -4,6 +4,10 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
+/**
+ * Validação antecipada do formulário de prestador.
+ * Confere dados obrigatórios, documento por comprimento e contato; não comprova CPF/CNPJ válido.
+ */
 @Component
 public class ProviderValidator {
 

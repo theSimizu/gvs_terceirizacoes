@@ -5,16 +5,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import tools.jackson.databind.ObjectMapper;
+import com.h_group.gvs_terceirizacoes.repository.UserRepository;
 
+/**
+ * Registra o filtro de autenticação para requisições da API.
+ * A seleção dos recursos protegidos é feita pelo próprio filtro.
+ */
 @Configuration
 public class FilterConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(
             JwtService jwtService,
-            ObjectMapper objectMapper
+            ObjectMapper objectMapper,
+            UserRepository userRepository
     ) {
-        return new JwtAuthenticationFilter(jwtService, objectMapper);
+        return new JwtAuthenticationFilter(jwtService, objectMapper, userRepository);
     }
 
     @Bean
@@ -24,13 +30,7 @@ public class FilterConfig {
         FilterRegistrationBean<JwtAuthenticationFilter> registration =
                 new FilterRegistrationBean<>(jwtAuthenticationFilter);
 
-        registration.addUrlPatterns(
-                "/api/clientes", "/api/clientes/*",
-                "/api/prestadores", "/api/prestadores/*",
-                "/api/contratos", "/api/contratos/*",
-                "/api/ordens-servico", "/api/ordens-servico/*",
-                "/api/historico", "/api/historico/*"
-        );
+        registration.addUrlPatterns("/api/*");
         registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         return registration;

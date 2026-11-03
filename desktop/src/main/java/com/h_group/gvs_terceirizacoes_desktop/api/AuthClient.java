@@ -5,9 +5,11 @@ import com.h_group.gvs_terceirizacoes_desktop.dto.LoginRequest;
 import com.h_group.gvs_terceirizacoes_desktop.dto.LoginResponse;
 import com.h_group.gvs_terceirizacoes_desktop.dto.RegisterRequest;
 import com.h_group.gvs_terceirizacoes_desktop.dto.RegisterResponse;
+import com.h_group.gvs_terceirizacoes_desktop.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "authClient", url = "${gvs.api.base-url}", configuration = FeignConfig.class)
@@ -18,5 +20,8 @@ public interface AuthClient {
 
 	@PostMapping(value = "/auth/register", consumes = MediaType.APPLICATION_JSON_VALUE)
 	RegisterResponse register(@RequestBody RegisterRequest request);
+
+	@GetMapping("/auth/me")
+	UserDTO currentUser();
 
 }

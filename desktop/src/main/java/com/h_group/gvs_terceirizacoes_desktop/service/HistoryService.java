@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * Obtém o histórico auxiliar e adapta falhas de conexão e validação.
+ * A consulta não cria automaticamente uma auditoria das operações do servidor.
+ */
 @Service
 @RequiredArgsConstructor
 public class HistoryService {
@@ -27,6 +31,9 @@ public class HistoryService {
 	private RuntimeException translate(RuntimeException exception) {
 		if (exception instanceof ApiException apiException) {
 			if (apiException.getStatus() == 400) {
+				if (apiException.hasValidationDetails()) {
+					return apiException;
+				}
 				return new ApiException("Verifique os dados informados.", 400);
 			}
 			return apiException;

@@ -22,7 +22,7 @@ class FileTokenStoreTest {
 	void savesAndLoadsSession() {
 		FileTokenStore store = store();
 
-		store.save(new StoredSession("token-value", new UserDTO("id", "Name", "mail@example.com")));
+		store.save(new StoredSession("token-value", new UserDTO("id", "Name", "mail@example.com", "user")));
 
 		Optional<StoredSession> loaded = store.load();
 		assertTrue(loaded.isPresent());
@@ -34,7 +34,7 @@ class FileTokenStoreTest {
 	void clearsSession() {
 		FileTokenStore store = store();
 
-		store.save(new StoredSession("token-value", new UserDTO("id", "Name", "mail@example.com")));
+		store.save(new StoredSession("token-value", new UserDTO("id", "Name", "mail@example.com", "user")));
 		store.clear();
 
 		assertTrue(store.load().isEmpty());

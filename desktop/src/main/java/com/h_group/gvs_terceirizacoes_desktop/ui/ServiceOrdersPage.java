@@ -329,6 +329,8 @@ public class ServiceOrdersPage implements Page {
 				Button edit = linkButton("Editar", "btn-link", event -> openForm(order));
 				MenuButton statusMenu = statusMenu(order);
 				Button delete = linkButton("Excluir", "btn-link-danger", event -> delete(order));
+				delete.setVisible(shell.canDelete());
+				delete.setManaged(shell.canDelete());
 				HBox box = new HBox(8, details, edit, statusMenu, delete);
 				box.setAlignment(Pos.CENTER_LEFT);
 				setGraphic(box);

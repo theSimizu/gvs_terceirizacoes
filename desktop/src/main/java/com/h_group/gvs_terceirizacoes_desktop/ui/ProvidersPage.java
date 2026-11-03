@@ -143,6 +143,8 @@ public class ProvidersPage implements Page {
 	}
 
 	private void configureActions() {
+		newButton.setVisible(shell.canManageRegistries());
+		newButton.setManaged(shell.canManageRegistries());
 		refreshButton.getStyleClass().add("btn-secondary");
 		refreshButton.setOnAction(event -> load());
 
@@ -217,6 +219,7 @@ public class ProvidersPage implements Page {
 
 	private TableColumn<ProviderDTO, Void> actionsColumn() {
 		TableColumn<ProviderDTO, Void> column = new TableColumn<>();
+		column.setVisible(shell.canManageRegistries());
 		Label title = new Label("Ações");
 		title.getStyleClass().add("column-header-label");
 		column.setGraphic(title);

@@ -19,6 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+/**
+ * Coordena login, cadastro, restauração e encerramento local de sessão.
+ * A restauração consulta a identidade atual na API, evitando confiar no perfil
+ * guardado em um arquivo editável do desktop.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -30,6 +35,13 @@ public class AuthService {
 	private final TokenStore tokenStore;
 	private final JwtExpiry jwtExpiry;
 
+	/**
+	 * Autentica e guarda a sessão recebida.
+	 * @param email e-mail da conta
+	 * @param password senha informada, sem inclusão em logs
+	 * @return resposta autenticada da API
+	 * @throws com.h_group.gvs_terceirizacoes_desktop.api.ApiException se o login ou a comunicação falhar
+	 */
 	public LoginResponse login(String email, String password) {
 		try {
 			LoginResponse response = authClient.login(new LoginRequest(email, password));
@@ -48,6 +60,14 @@ public class AuthService {
 		}
 	}
 
+	/**
+	 * Solicita uma conta comum; uma resposta sem token exige login posterior.
+	 * @param name nome informado
+	 * @param email e-mail informado
+	 * @param password senha informada
+	 * @return resposta do cadastro
+	 * @throws com.h_group.gvs_terceirizacoes_desktop.api.ApiException se o cadastro ou a comunicação falhar
+	 */
 	public RegisterResponse register(String name, String email, String password) {
 		try {
 			RegisterResponse response = authClient.register(new RegisterRequest(name, email, password));
@@ -67,6 +87,11 @@ public class AuthService {
 		}
 	}
 
+	/**
+	 * Confere expiração e consulta a identidade atual na API antes de restaurar.
+	 * O perfil persistido no arquivo local não é aceito como autoridade.
+	 * @return true se uma sessão foi restaurada após a conferência do servidor
+	 */
 	public boolean restoreSession() {
 		Optional<StoredSession> stored = tokenStore.load();
 		if (stored.isEmpty()) {
@@ -77,10 +102,28 @@ public class AuthService {
 			tokenStore.clear();
 			return false;
 		}
-		authSession.store(session.token(), session.user());
-		return true;
+		authSession.store(session.token(), null);
+		try {
+			UserDTO user = authClient.currentUser();
+			if (user == null || user.role() == null) {
+				authSession.clear();
+				return false;
+			}
+			authSession.store(session.token(), user);
+			persist(session.token(), user);
+			return true;
+		} catch (RuntimeException exception) {
+			authSession.clear();
+			if (exception instanceof ApiException apiException && apiException.getStatus() == 401) {
+				tokenStore.clear();
+			}
+			return false;
+		}
 	}
 
+	/**
+	 * Limpa o estado e o arquivo locais; não revoga o JWT no servidor.
+	 */
 	public void logout() {
 		authSession.clear();
 		tokenStore.clear();

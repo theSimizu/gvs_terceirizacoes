@@ -13,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * Alterna as cenas de login, cadastro e área autenticada no Stage principal.
+ * Centraliza estilos e montagem da navegação JavaFX.
+ */
 @Component
 @RequiredArgsConstructor
 public class Navigator {

@@ -17,6 +17,10 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Evento auxiliar de histórico com ação, entidade, documento e detalhes JSON.
+ * Quando a data não é fornecida, ela é atribuída antes da persistência.
+ */
 @Entity
 @Table(name = "histories")
 @Getter

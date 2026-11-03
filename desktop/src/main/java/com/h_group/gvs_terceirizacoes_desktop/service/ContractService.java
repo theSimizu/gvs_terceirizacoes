@@ -13,6 +13,10 @@ import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
+/**
+ * Encaminha operações de contratos e identifica vínculos ausentes nas mensagens.
+ * Preserva as validações detalhadas recebidas da API.
+ */
 @Service
 @RequiredArgsConstructor
 public class ContractService {

@@ -3,6 +3,10 @@ package com.h_group.gvs_terceirizacoes.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Perfis reconhecidos pela aplicação: administrador e usuário.
+ * O banco persiste os nomes do enum; o JSON usa os valores em letras minúsculas.
+ */
 public enum UserRole {
     ADM("adm"), USER("user");
 

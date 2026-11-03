@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
+/** Ponto de entrada que lança o ciclo JavaFX; o contexto Spring é montado sem servidor web. */
 @SpringBootApplication
 @EnableFeignClients
 @ConfigurationPropertiesScan

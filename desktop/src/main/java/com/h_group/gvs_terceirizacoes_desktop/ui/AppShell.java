@@ -23,6 +23,11 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Monta navegação, cabeçalho e área de conteúdo da aplicação autenticada.
+ * Os controles administrativos dependem do perfil da sessão; a proteção definitiva
+ * continua sendo aplicada pelo backend.
+ */
 public class AppShell {
 
 	private static final String DASHBOARD = "dashboard";

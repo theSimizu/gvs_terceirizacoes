@@ -18,6 +18,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Conta interna persistida, com senha protegida e perfil de acesso.
+ * O perfil inicial é USER. A entidade é convertida em DTO antes de responder à API.
+ */
 @Entity
 @Table(name = "users")
 @Getter

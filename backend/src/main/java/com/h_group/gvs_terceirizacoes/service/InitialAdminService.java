@@ -13,6 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Inicialização opcional da primeira conta ADM por configuração do servidor.
+ * Não promove contas existentes, não troca senhas e não cria outro administrador
+ * quando já existe um. As credenciais não possuem valores padrão no código.
+ */
 @Component
 public class InitialAdminService implements ApplicationRunner {
     private final UserRepository userRepository;
@@ -34,6 +39,11 @@ public class InitialAdminService implements ApplicationRunner {
         this.name = name;
     }
 
+    /**
+     * Cria a primeira conta administrativa quando a configuração é fornecida.
+     * @param args argumentos de inicialização do Spring
+     * @throws IllegalStateException se a configuração for inválida ou o e-mail já pertencer a uma conta
+     */
     @Override
     @Transactional
     public void run(ApplicationArguments args) {

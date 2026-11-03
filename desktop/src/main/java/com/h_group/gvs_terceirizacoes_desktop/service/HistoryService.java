@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * Obtém o histórico auxiliar e adapta falhas de conexão e validação.
+ * A consulta não cria automaticamente uma auditoria das operações do servidor.
+ */
 @Service
 @RequiredArgsConstructor
 public class HistoryService {

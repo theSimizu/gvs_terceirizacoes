@@ -14,6 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Mantém clientes e verifica conflitos do CNPJ informado.
+ * Os métodos de escrita são transacionais; a exclusão física continua sujeita
+ * às restrições dos relacionamentos persistidos.
+ */
 @Service
 public class ClientService {
 
@@ -23,6 +28,10 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
+    /**
+     * Lista clientes e converte as entidades dentro da transação de leitura.
+     * @return registros disponíveis na base
+     */
     @Transactional(readOnly = true)
     public List<ClientResponse> findAll() {
         return clientRepository.findAll()
@@ -31,11 +40,23 @@ public class ClientService {
                 .toList();
     }
 
+    /**
+     * Consulta um registro pelo identificador.
+     * @param id identificador persistido
+     * @return representação pública do registro
+     * @throws com.h_group.gvs_terceirizacoes.exception.ApiException se não existir
+     */
     @Transactional(readOnly = true)
     public ClientResponse findById(UUID id) {
         return ClientResponse.from(getEntity(id));
     }
 
+    /**
+     * Cria um registro usando a transação do serviço.
+     * @param request dados validados na entrada HTTP
+     * @return registro criado
+     * @throws com.h_group.gvs_terceirizacoes.exception.ApiException se houver conflito ou vínculo inexistente
+     */
     @Transactional
     public ClientResponse create(CreateClientRequest request) {
         String cnpj = request.cnpj().trim();
@@ -55,6 +76,12 @@ public class ClientService {
         return ClientResponse.from(clientRepository.save(client));
     }
 
+    /**
+     * Atualiza os campos não nulos enviados; campos ausentes preservam o valor atual.
+     * @param id identificador persistido
+     * @param request alterações recebidas
+     * @return representação atualizada
+     */
     @Transactional
     public ClientResponse update(UUID id, UpdateClientRequest request) {
         Client client = getEntity(id);
@@ -89,6 +116,10 @@ public class ClientService {
         return ClientResponse.from(clientRepository.save(client));
     }
 
+    /**
+     * Solicita exclusão física do registro; relacionamentos podem impedir a operação.
+     * @param id identificador persistido
+     */
     @Transactional
     public void delete(UUID id) {
         Client client = getEntity(id);

@@ -13,6 +13,10 @@ import com.h_group.gvs_terceirizacoes_desktop.validation.ProviderValidator;
 import com.h_group.gvs_terceirizacoes_desktop.validation.ServiceOrderValidator;
 import org.springframework.stereotype.Component;
 
+/**
+ * Agrupa serviços e validadores injetados na montagem das páginas.
+ * Mantém a construção da interface separada da criação de clientes HTTP e repositórios.
+ */
 @Component
 public record PageDependencies(
 		DashboardService dashboardService,

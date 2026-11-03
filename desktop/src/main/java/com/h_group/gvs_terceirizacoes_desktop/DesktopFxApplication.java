@@ -15,6 +15,10 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
+/**
+ * Integra o ciclo de vida JavaFX ao contexto Spring sem iniciar servidor web.
+ * A verificação de sessão ocorre em segundo plano antes de apresentar a área autenticada.
+ */
 public class DesktopFxApplication extends Application {
 
 	private ConfigurableApplicationContext context;

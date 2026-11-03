@@ -17,6 +17,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Cadastro de cliente PJ, com CNPJ único, contato e situação.
+ * O modelo atual mantém apenas um e-mail, telefone e endereço por cliente.
+ */
 @Entity
 @Table(name = "clients")
 @Getter

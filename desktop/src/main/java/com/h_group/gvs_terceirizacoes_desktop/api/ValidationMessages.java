@@ -3,6 +3,7 @@ package com.h_group.gvs_terceirizacoes_desktop.api;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/** Adapta os rótulos de campo e as mensagens usuais de validação para a interface em português. */
 final class ValidationMessages {
 
 	private static final Map<String, String> FIELDS = Map.ofEntries(

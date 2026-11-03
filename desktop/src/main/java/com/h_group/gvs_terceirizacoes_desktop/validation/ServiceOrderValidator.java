@@ -5,6 +5,10 @@ import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 
+/**
+ * Validação dos dados necessários ao formulário de ordem de serviço.
+ * Auxilia a pessoa antes do envio; a API mantém suas próprias restrições de entrada.
+ */
 @Component
 public class ServiceOrderValidator {
 

@@ -17,6 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Locale;
 import java.util.UUID;
 
+/**
+ * Serviço transacional de cadastro, autenticação e consulta da identidade.
+ * O cadastro público produz contas USER; respostas nunca incluem senha ou hash.
+ */
 @Service
 public class UserService {
 
@@ -34,6 +38,12 @@ public class UserService {
         this.jwtService = jwtService;
     }
 
+    /**
+     * Cadastra uma conta comum e protege a senha com o encoder configurado.
+     * @param request dados de entrada validados pelo controller
+     * @return identificação da conta criada, com perfil USER
+     * @throws com.h_group.gvs_terceirizacoes.exception.ApiException se o e-mail já existir
+     */
     @Transactional
     public UserResponse register(RegisterRequest request) {
         String email = normalizeEmail(request.email());
@@ -51,6 +61,12 @@ public class UserService {
         return UserResponse.from(userRepository.save(user));
     }
 
+    /**
+     * Confere a senha e emite a sessão autenticada.
+     * @param request e-mail e senha informados
+     * @return token e identificação pública da conta
+     * @throws com.h_group.gvs_terceirizacoes.exception.ApiException se a credencial for inválida
+     */
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
         String email = normalizeEmail(request.email());
@@ -68,6 +84,12 @@ public class UserService {
         return email.trim().toLowerCase(Locale.ROOT);
     }
 
+    /**
+     * Consulta a identidade e o perfil atuais sem expor credenciais.
+     * @param id identificador validado pelo filtro
+     * @return dados públicos da conta
+     * @throws com.h_group.gvs_terceirizacoes.exception.ApiException se a conta não existir
+     */
     @Transactional(readOnly = true)
     public UserResponse currentUser(UUID id) {
         return UserResponse.from(userRepository.findById(id)

@@ -5,6 +5,13 @@ import com.h_group.gvs_terceirizacoes.entity.UserRole;
 
 import java.util.UUID;
 
+/**
+ * Identificação pública de uma conta, sem senha ou hash.
+ * @param id identificador persistido
+ * @param name nome da conta
+ * @param email e-mail da conta
+ * @param role perfil atual
+ */
 public record UserResponse(UUID id, String name, String email, UserRole role) {
 
     public static UserResponse from(User user) {

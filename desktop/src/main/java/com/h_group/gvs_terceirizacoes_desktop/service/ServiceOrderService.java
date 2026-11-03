@@ -13,6 +13,10 @@ import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
+/**
+ * Encaminha operações de ordens e atualização parcial de status.
+ * Mantém a distinção entre ordem inexistente e contrato associado inexistente.
+ */
 @Service
 @RequiredArgsConstructor
 public class ServiceOrderService {

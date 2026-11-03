@@ -19,6 +19,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Protege os recursos operacionais e a consulta de identidade da sessão.
+ * Valida o JWT, carrega o usuário, consulta a política de acesso e encaminha apenas
+ * requisições autorizadas. Caminhos são normalizados antes da decisão.
+ *
+ * @see AccessPolicy
+ */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final List<String> PROTECTED_PREFIXES = List.of(

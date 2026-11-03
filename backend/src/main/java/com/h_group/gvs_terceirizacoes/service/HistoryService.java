@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Consulta e registra eventos do histórico auxiliar em transações.
+ * O registro recebe ação, entidade e detalhes do cliente; não comprova autoria
+ * nem garante uma trilha automática de todas as alterações da API.
+ */
 @Service
 public class HistoryService {
 

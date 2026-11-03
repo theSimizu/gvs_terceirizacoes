@@ -1,5 +1,9 @@
 package com.h_group.gvs_terceirizacoes_desktop.api;
 
+/**
+ * Falha comunicável à interface, com status HTTP e indicação de validação detalhada.
+ * O status zero identifica falhas sem uma resposta HTTP, como indisponibilidade.
+ */
 public class ApiException extends RuntimeException {
 
 	private final int status;
@@ -25,6 +29,10 @@ public class ApiException extends RuntimeException {
 		return status;
 	}
 
+	/**
+	 * Indica que a mensagem contém detalhes de campos que os serviços devem preservar.
+	 * @return true quando há uma mensagem de validação detalhada
+	 */
 	public boolean hasValidationDetails() {
 		return validationDetails;
 	}

@@ -13,6 +13,10 @@ import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
+/**
+ * Encaminha operações de prestadores e traduz conflitos de documento e vínculo.
+ * A mudança de disponibilidade utiliza uma atualização parcial do cadastro.
+ */
 @Service
 @RequiredArgsConstructor
 public class ProviderService {

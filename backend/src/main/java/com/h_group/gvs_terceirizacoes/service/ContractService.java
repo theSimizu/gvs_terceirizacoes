@@ -18,6 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Mantém contratos associados a um cliente e um prestador existentes.
+ * Carrega relacionamentos dentro da transação antes de construir os DTOs.
+ * As validações de período realizadas apenas no desktop não são acrescentadas aqui.
+ */
 @Service
 public class ContractService {
 
@@ -35,6 +40,10 @@ public class ContractService {
         this.providerRepository = providerRepository;
     }
 
+    /**
+     * Lista contratos e converte as entidades dentro da transação de leitura.
+     * @return registros disponíveis na base
+     */
     @Transactional(readOnly = true)
     public List<ContractResponse> findAll() {
         return contractRepository.findAll()
@@ -43,11 +52,23 @@ public class ContractService {
                 .toList();
     }
 
+    /**
+     * Consulta um registro pelo identificador.
+     * @param id identificador persistido
+     * @return representação pública do registro
+     * @throws com.h_group.gvs_terceirizacoes.exception.ApiException se não existir
+     */
     @Transactional(readOnly = true)
     public ContractResponse findById(UUID id) {
         return ContractResponse.from(getEntity(id));
     }
 
+    /**
+     * Cria um registro usando a transação do serviço.
+     * @param request dados validados na entrada HTTP
+     * @return registro criado
+     * @throws com.h_group.gvs_terceirizacoes.exception.ApiException se houver conflito ou vínculo inexistente
+     */
     @Transactional
     public ContractResponse create(CreateContractRequest request) {
         Client client = getClient(request.clientId());
@@ -64,6 +85,12 @@ public class ContractService {
         return ContractResponse.from(contractRepository.save(contract));
     }
 
+    /**
+     * Atualiza os campos não nulos enviados; campos ausentes preservam o valor atual.
+     * @param id identificador persistido
+     * @param request alterações recebidas
+     * @return representação atualizada
+     */
     @Transactional
     public ContractResponse update(UUID id, UpdateContractRequest request) {
         Contract contract = getEntity(id);
@@ -90,6 +117,10 @@ public class ContractService {
         return ContractResponse.from(contractRepository.save(contract));
     }
 
+    /**
+     * Solicita exclusão física do registro; relacionamentos podem impedir a operação.
+     * @param id identificador persistido
+     */
     @Transactional
     public void delete(UUID id) {
         Contract contract = getEntity(id);

@@ -8,15 +8,31 @@ import lombok.RequiredArgsConstructor;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+/**
+ * Lê a expiração do payload JWT para orientar a restauração local da sessão.
+ * Não verifica a assinatura do token. A identidade e o perfil atuais são
+ * conferidos no servidor antes de abrir uma sessão restaurada.
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtExpiry {
 	private final ObjectMapper objectMapper;
 
+	/**
+	 * Verifica a expiração usando o horário atual.
+	 * @param token token salvo no desktop
+	 * @return true se expirou ou não foi possível ler a expiração
+	 */
 	public boolean isExpired(String token) {
 		return isExpired(token, Instant.now());
 	}
 
+	/**
+	 * Verifica a expiração em um instante explícito, permitindo testes determinísticos.
+	 * @param token token a examinar
+	 * @param now instante usado na comparação
+	 * @return true quando expirou ou o payload é inválido
+	 */
 	public boolean isExpired(String token, Instant now) {
 		Long expiresAt = readExpiration(token);
 		if (expiresAt == null) {

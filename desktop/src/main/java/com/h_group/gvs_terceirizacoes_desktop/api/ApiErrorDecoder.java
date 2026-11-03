@@ -9,6 +9,11 @@ import java.util.LinkedHashSet;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+/**
+ * Interpreta respostas de erro HTTP da API e cria exceções do desktop.
+ * Preserva status, lê detalhes por campo, admite formatos anteriores e prepara
+ * mensagens seguras para sessão, permissão e falha do servidor.
+ */
 public class ApiErrorDecoder implements ErrorDecoder {
 
 	private final ObjectMapper objectMapper;
@@ -17,6 +22,12 @@ public class ApiErrorDecoder implements ErrorDecoder {
 		this.objectMapper = objectMapper;
 	}
 
+	/**
+	 * Traduz a resposta HTTP sem perder seu status nem detalhes úteis de validação.
+	 * @param methodKey identificação do método Feign, usada para distinguir login de sessão
+	 * @param response resposta HTTP de falha
+	 * @return exceção que o serviço ou a tela pode apresentar
+	 */
 	@Override
 	public Exception decode(String methodKey, Response response) {
 		int status = response.status();

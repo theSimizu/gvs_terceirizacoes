@@ -7,6 +7,10 @@ import org.springframework.core.Ordered;
 import tools.jackson.databind.ObjectMapper;
 import com.h_group.gvs_terceirizacoes.repository.UserRepository;
 
+/**
+ * Registra o filtro de autenticação para requisições da API.
+ * A seleção dos recursos protegidos é feita pelo próprio filtro.
+ */
 @Configuration
 public class FilterConfig {
 

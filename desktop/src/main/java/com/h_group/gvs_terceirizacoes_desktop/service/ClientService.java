@@ -13,6 +13,10 @@ import java.util.Locale;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
+/**
+ * Encaminha operações de clientes pelo Feign e traduz falhas para a interface.
+ * Mantém os detalhes de validação e distingue documento duplicado de conflito de vínculo.
+ */
 @Service
 @RequiredArgsConstructor
 public class ClientService {

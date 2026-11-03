@@ -4,6 +4,11 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
+/**
+ * Validação antecipada de login e cadastro no desktop.
+ * O cadastro exige senha com oito caracteres e composição definida pelo formulário;
+ * essa regra é mais restritiva que o mínimo de seis caracteres da API atual.
+ */
 @Component
 public class AuthValidator {
 

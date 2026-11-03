@@ -22,6 +22,11 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Contrato que relaciona um cliente e um prestador.
+ * Registra período, valor acordado, situação e timestamps. Esse vínculo não
+ * substitui o modelo de projeto coordenado por administrador dos documentos de escopo.
+ */
 @Entity
 @Table(name = "contracts")
 @Getter

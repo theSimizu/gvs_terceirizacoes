@@ -61,6 +61,7 @@ O backend confere o perfil atual no banco em cada requisição protegida. Os con
 - [Testes e geração de Javadoc](docs/TESTES_E_JAVADOC.md)
 - [Conceitos de orientação a objetos aplicados](docs/CONCEITOS_POO.md)
 - [Perfis, primeiro administrador e migração](backend/PERFIS_DE_ACESSO.md)
+- [Iniciar API e MySQL com Docker Compose](backend/README_SERVIDOR.md)
 
 ## Estado da implementação
 
@@ -68,4 +69,4 @@ Há código para login/cadastro, perfis adm/user, CRUD de clientes/prestadores/c
 
 O domínio implementado usa **contratos**. Projetos coordenados por administrador, catálogo de tipos de serviço, prestações, equipes, pagamentos e avaliações do escopo revisado ainda precisam de alinhamento com a implementação. Consulte os limites detalhados na arquitetura.
 
-O Compose existente não é o procedimento de instalação validado: a configuração inicial da senha root do serviço MySQL e a consistência das portas precisam ser revistas. O guia descreve a execução com MySQL já preparado, sem depender do Compose.
+Para iniciar a API e o MySQL juntos, siga o [guia do servidor com Docker Compose](backend/README_SERVIDOR.md). Ele usa um `.env` privado, exige os segredos antes de subir os containers e publica somente a porta da API. A execução sem Docker, com MySQL já preparado, continua descrita no guia de instalação.

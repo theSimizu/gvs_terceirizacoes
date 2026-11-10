@@ -62,6 +62,7 @@ O backend confere o perfil atual no banco em cada requisição protegida. Os con
 - [Conceitos de orientação a objetos aplicados](docs/CONCEITOS_POO.md)
 - [Perfis, primeiro administrador e migração](backend/PERFIS_DE_ACESSO.md)
 - [Iniciar API e MySQL com Docker Compose](backend/README_SERVIDOR.md)
+- [Abrir o desktop por duplo clique no Windows](desktop/COMO_ABRIR.md)
 
 ## Estado da implementação
 

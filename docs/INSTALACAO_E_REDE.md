@@ -72,6 +72,8 @@ As variáveis definidas com `$env:` valem para esse terminal e seus processos fi
 
 ## Executar o desktop
 
+No Windows, também é possível dar dois cliques em `desktop/Iniciar-GVS.cmd` e informar o IP do servidor. O iniciador confere JDK 25 e conexão, guarda a configuração local e executa o Maven. Veja [como abrir o desktop](../desktop/COMO_ABRIR.md). Os comandos abaixo continuam disponíveis para execução por terminal.
+
 Abra outro terminal na pasta `desktop`. Para executar no mesmo computador da API:
 
 ```powershell

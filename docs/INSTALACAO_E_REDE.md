@@ -2,6 +2,8 @@
 
 Este roteiro usa o backend e o desktop deste repositório. Os comandos são para PowerShell, executados na pasta indicada. A execução em três computadores é uma etapa manual ainda pendente; os testes automatizados não substituem esse ensaio.
 
+Para iniciar o servidor com API e MySQL em containers, siga o [guia do Docker Compose](../backend/README_SERVIDOR.md) e depois retome este documento em **Executar o desktop**. As próximas seções descrevem a alternativa de executar o backend por Maven com MySQL já preparado.
+
 ## Preparar o ambiente
 
 Instale um JDK 25 completo, MySQL 8 no servidor e mantenha acesso à internet para o Maven Wrapper baixar ferramentas e dependências. Cada computador que executar o desktop precisa de ambiente gráfico e das bibliotecas JavaFX da plataforma, resolvidas pelo Maven.
@@ -66,7 +68,7 @@ Inicie o backend:
 
 Com a porta 8080, confira `http://localhost:8080/`, a descrição HTTP em `http://localhost:8080/api-docs` e a interface Swagger em `http://localhost:8080/swagger-ui.html`. Falha de acesso ao banco ou configuração incompleta deve ser resolvida antes de iniciar os clientes.
 
-As variáveis definidas com `$env:` valem para esse terminal e seus processos filhos. Um `.env` na pasta não é carregado automaticamente pelo comando Maven. O Compose atual precisa de revisão da configuração inicial do MySQL e das portas; este roteiro pressupõe MySQL já preparado.
+As variáveis definidas com `$env:` valem para esse terminal e seus processos filhos. Um `.env` na pasta não é carregado automaticamente pelo comando Maven. O Docker Compose, por sua vez, lê esse arquivo para montar a configuração descrita no guia próprio; não misture as URLs de banco interna do Docker e externa do Maven.
 
 ## Executar o desktop
 

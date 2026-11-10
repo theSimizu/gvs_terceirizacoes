@@ -1,6 +1,7 @@
 target
 .git
 .env
+.env.*
 .vscode
 *.md
 .idea

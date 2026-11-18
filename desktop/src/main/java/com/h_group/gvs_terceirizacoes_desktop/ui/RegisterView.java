@@ -4,7 +4,6 @@ import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
 import com.h_group.gvs_terceirizacoes_desktop.dto.RegisterResponse;
 import com.h_group.gvs_terceirizacoes_desktop.service.AuthService;
 import com.h_group.gvs_terceirizacoes_desktop.validation.AuthValidator;
-import java.io.InputStream;
 import java.util.Optional;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -15,9 +14,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class RegisterView {
@@ -47,18 +43,18 @@ public class RegisterView {
 	}
 
 	public Parent build() {
-		StackPane root = new StackPane();
-		root.getStyleClass().add("auth-root");
-
 		VBox card = new VBox();
 		card.getStyleClass().addAll("auth-card", "auth-card-register");
-		card.setAlignment(Pos.TOP_CENTER);
+		card.setAlignment(Pos.CENTER_LEFT);
 		card.setMaxWidth(420);
 		card.setPrefWidth(420);
 		card.setFillWidth(true);
 
-		Label title = new Label("Criar Conta");
+		Label title = new Label("Crie sua conta");
 		title.getStyleClass().add("auth-title");
+		Label subtitle = new Label("Preencha seus dados para começar.");
+		subtitle.getStyleClass().add("auth-subtitle");
+		subtitle.setWrapText(true);
 
 		messageLabel.setWrapText(true);
 		messageLabel.setMaxWidth(Double.MAX_VALUE);
@@ -66,7 +62,7 @@ public class RegisterView {
 		messageLabel.setManaged(false);
 
 		VBox nameGroup = fieldGroup("Nome completo", nameField, "Seu nome");
-		VBox emailGroup = fieldGroup("E-mail", emailField, "novo@gvs.com");
+		VBox emailGroup = fieldGroup("E-mail", emailField, "seu@email.com");
 		VBox passwordGroup = fieldGroup("Senha", passwordField, "");
 		VBox confirmationGroup = fieldGroup("Confirmar Senha", confirmationField, "");
 
@@ -90,11 +86,10 @@ public class RegisterView {
 		loginLink.getStyleClass().add("auth-link");
 		loginLink.setOnAction(event -> navigator.showLogin());
 
-		card.getChildren().addAll(createLogo(), title, messageLabel, nameGroup, emailGroup, passwordGroup,
+		card.getChildren().addAll(title, subtitle, messageLabel, nameGroup, emailGroup, passwordGroup,
 				confirmationGroup, hint, submitButton, loginLink);
 
-		root.getChildren().add(card);
-		return root;
+		return AuthLayout.wrap(card);
 	}
 
 	private VBox fieldGroup(String labelText, TextField input, String prompt) {
@@ -108,22 +103,6 @@ public class RegisterView {
 		return new VBox(4, label, input);
 	}
 
-	private ImageView createLogo() {
-		try (InputStream stream = RegisterView.class.getResourceAsStream("/images/logo.png")) {
-			if (stream != null) {
-				ImageView view = new ImageView(new Image(stream));
-				view.setFitWidth(110);
-				view.setPreserveRatio(true);
-				view.setSmooth(true);
-				VBox.setMargin(view, new Insets(0, 0, 6, 0));
-				return view;
-			}
-		}
-		catch (Exception exception) {
-			// Ignore a missing or invalid logo.
-		}
-		return new ImageView();
-	}
 
 	private void submit() {
 		String name = normalize(nameField.getText());

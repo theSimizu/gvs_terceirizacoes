@@ -138,8 +138,17 @@ function Start-GvsDesktop {
 		$env:GVS_API_BASEURL = $apiUrl
 		Write-Host 'Abrindo o GVS. A primeira execução baixa dependências e pode demorar.'
 		Write-Host 'Mantenha esta janela aberta enquanto estiver usando o sistema.'
-		& .\mvnw.cmd javafx:run
-		if ($LASTEXITCODE -ne 0) { throw 'A abertura falhou. Confira a mensagem do Maven acima e a conexão à internet.' }
+		$classpathFile = 'target\desktop-runtime-classpath.txt'
+		& .\mvnw.cmd compile org.apache.maven.plugins:maven-dependency-plugin:3.9.0:build-classpath '-DincludeScope=runtime' "-Dmdep.outputFile=$classpathFile"
+		if ($LASTEXITCODE -ne 0) { throw 'Não consegui preparar o aplicativo. Confira a mensagem do Maven acima e a conexão à internet.' }
+		if (-not (Test-Path -LiteralPath $classpathFile -PathType Leaf)) { throw 'O Maven não gerou a lista de dependências do aplicativo.' }
+		$dependencies = @((Get-Content -LiteralPath $classpathFile -Raw).Trim().Split([IO.Path]::PathSeparator) | Where-Object { $_ })
+		if (-not $dependencies.Count) { throw 'A lista de dependências do aplicativo está vazia.' }
+		$modulePath = @($dependencies | Where-Object { [IO.Path]::GetFileName($_) -like 'javafx-*.jar' })
+		$classPath = @('target\classes') + @($dependencies | Where-Object { [IO.Path]::GetFileName($_) -notlike 'javafx-*.jar' })
+		if (-not $modulePath.Count) { throw 'As dependências JavaFX não foram encontradas.' }
+		& (Join-Path $resolvedJava 'bin\java.exe') '--enable-native-access=javafx.graphics' '--module-path' ($modulePath -join [IO.Path]::PathSeparator) '--add-modules' 'javafx.controls' '-classpath' ($classPath -join [IO.Path]::PathSeparator) 'com.h_group.gvs_terceirizacoes_desktop.GvsTerceirizacoesDesktopApplication'
+		if ($LASTEXITCODE -ne 0) { throw 'O aplicativo encerrou com erro. Confira a mensagem do Java acima.' }
 	} finally {
 		$env:JAVA_HOME = $oldJavaHome
 		$env:Path = $oldPath

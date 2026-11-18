@@ -4,7 +4,6 @@ import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
 import com.h_group.gvs_terceirizacoes_desktop.dto.LoginResponse;
 import com.h_group.gvs_terceirizacoes_desktop.service.AuthService;
 import com.h_group.gvs_terceirizacoes_desktop.validation.AuthValidator;
-import java.io.InputStream;
 import java.util.Optional;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -15,9 +14,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class LoginView {
@@ -46,19 +42,19 @@ public class LoginView {
 	}
 
 	public Parent build() {
-		StackPane root = new StackPane();
-		root.getStyleClass().add("auth-root");
-
 		VBox card = new VBox();
 		card.getStyleClass().add("auth-card");
-		card.setAlignment(Pos.TOP_CENTER);
+		card.setAlignment(Pos.CENTER_LEFT);
 		card.setMaxWidth(400);
 		card.setPrefWidth(400);
 		card.setFillWidth(true);
 
-		Label title = new Label("Acesso ao Sistema");
+		Label title = new Label("Entrar no GVS");
 		title.getStyleClass().add("auth-title");
-		VBox.setMargin(title, new Insets(0, 0, 8, 0));
+		Label subtitle = new Label("Use seu e-mail e senha para continuar.");
+		subtitle.getStyleClass().add("auth-subtitle");
+		subtitle.setWrapText(true);
+		VBox.setMargin(title, new Insets(0, 0, 0, 0));
 
 		messageLabel.setWrapText(true);
 		messageLabel.setMaxWidth(Double.MAX_VALUE);
@@ -68,7 +64,7 @@ public class LoginView {
 		Label emailLabel = new Label("E-mail");
 		emailLabel.getStyleClass().add("auth-label");
 		emailField.getStyleClass().add("auth-input");
-		emailField.setPromptText("admin@gvs.com");
+		emailField.setPromptText("seu@email.com");
 		emailField.setOnAction(event -> submit());
 
 		Label passwordLabel = new Label("Senha");
@@ -90,33 +86,16 @@ public class LoginView {
 		registerLink.getStyleClass().add("auth-link");
 		registerLink.setOnAction(event -> navigator.showRegister());
 
-		card.getChildren().addAll(createLogo(), title, messageLabel, emailGroup, passwordGroup, submitButton,
+		card.getChildren().addAll(title, subtitle, messageLabel, emailGroup, passwordGroup, submitButton,
 				registerLink);
 
 		if (notice != null && !notice.isBlank()) {
 			showMessage(notice, true);
 		}
 
-		root.getChildren().add(card);
-		return root;
+		return AuthLayout.wrap(card);
 	}
 
-	private ImageView createLogo() {
-		try (InputStream stream = LoginView.class.getResourceAsStream("/images/logo.png")) {
-			if (stream != null) {
-				ImageView view = new ImageView(new Image(stream));
-				view.setFitWidth(150);
-				view.setPreserveRatio(true);
-				view.setSmooth(true);
-				VBox.setMargin(view, new Insets(0, 0, 12, 0));
-				return view;
-			}
-		}
-		catch (Exception exception) {
-			// Ignore a missing or invalid logo.
-		}
-		return new ImageView();
-	}
 
 	private void submit() {
 		String email = normalize(emailField.getText());

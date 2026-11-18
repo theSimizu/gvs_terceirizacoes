@@ -3,13 +3,11 @@ package com.h_group.gvs_terceirizacoes_desktop.ui;
 import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ProviderDTO;
 import com.h_group.gvs_terceirizacoes_desktop.validation.ProviderValidator;
-import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -23,8 +21,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 public class ProviderFormDialog {
-
-	private static final String STYLESHEET = "/css/app.css";
 
 	private final AppShell shell;
 
@@ -72,17 +68,8 @@ public class ProviderFormDialog {
 	private void build(String title, String submitLabel, ProviderDTO existing) {
 		this.submitLabel = submitLabel;
 
-		dialog.setTitle(title);
-		dialog.setHeaderText(null);
-		dialog.setResizable(false);
-
-		DialogPane pane = dialog.getDialogPane();
-		pane.getStyleClass().add("app-dialog");
-		pane.setPrefWidth(420);
-		URL stylesheet = ProviderFormDialog.class.getResource(STYLESHEET);
-		if (stylesheet != null) {
-			pane.getStylesheets().add(stylesheet.toExternalForm());
-		}
+		DialogPane pane = DialogDesign.configure(dialog, shell.window(), title,
+				"Organize os dados e a disponibilidade do prestador.");
 
 		taxIdField.setTextFormatter(InputMasks.cpfCnpj());
 		phoneField.setTextFormatter(InputMasks.phone());
@@ -136,8 +123,7 @@ public class ProviderFormDialog {
 				field("Disponibilidade", availabilityBox),
 				errorLabel);
 		content.getStyleClass().add("dialog-content");
-		content.setPadding(new Insets(8, 0, 0, 0));
-		pane.setContent(content);
+		pane.setContent(DialogDesign.form(content, 0));
 
 		ButtonType save = new ButtonType(submitLabel, ButtonBar.ButtonData.OK_DONE);
 		ButtonType cancel = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -157,6 +143,7 @@ public class ProviderFormDialog {
 	private VBox field(String label, Control control) {
 		Label fieldLabel = new Label(label);
 		fieldLabel.getStyleClass().add("form-label");
+		fieldLabel.setLabelFor(control);
 		control.setMaxWidth(Double.MAX_VALUE);
 		return new VBox(4, fieldLabel, control);
 	}

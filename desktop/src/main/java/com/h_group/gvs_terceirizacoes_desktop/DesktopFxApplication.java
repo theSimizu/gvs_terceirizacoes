@@ -5,11 +5,6 @@ import com.h_group.gvs_terceirizacoes_desktop.ui.Navigator;
 import com.h_group.gvs_terceirizacoes_desktop.ui.FxAsync;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -36,10 +31,7 @@ public class DesktopFxApplication extends Application {
 		Navigator navigator = context.getBean(Navigator.class);
 		AuthService authService = context.getBean(AuthService.class);
 		navigator.initialize(stage);
-		VBox loading = new VBox(16, new ProgressIndicator(), new Label("Verificando sua sessão…"));
-		loading.setAlignment(Pos.CENTER);
-		stage.setScene(new Scene(loading));
-		stage.show();
+		navigator.showLoading();
 		FxAsync.run(authService::restoreSession, restored -> {
 			if (restored) {
 				navigator.showHome();

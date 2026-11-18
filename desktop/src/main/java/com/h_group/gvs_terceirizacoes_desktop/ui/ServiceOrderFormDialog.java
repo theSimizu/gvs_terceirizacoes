@@ -4,7 +4,6 @@ import com.h_group.gvs_terceirizacoes_desktop.api.ApiException;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ContractDTO;
 import com.h_group.gvs_terceirizacoes_desktop.dto.ServiceOrderDTO;
 import com.h_group.gvs_terceirizacoes_desktop.validation.ServiceOrderValidator;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -14,7 +13,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -29,8 +27,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 public class ServiceOrderFormDialog {
-
-	private static final String STYLESHEET = "/css/app.css";
 
 	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -77,17 +73,8 @@ public class ServiceOrderFormDialog {
 	private void build(String title, String submitLabel, ServiceOrderDTO existing, List<ContractDTO> contracts) {
 		this.submitLabel = submitLabel;
 
-		dialog.setTitle(title);
-		dialog.setHeaderText(null);
-		dialog.setResizable(false);
-
-		DialogPane pane = dialog.getDialogPane();
-		pane.getStyleClass().add("app-dialog");
-		pane.setPrefWidth(460);
-		URL stylesheet = ServiceOrderFormDialog.class.getResource(STYLESHEET);
-		if (stylesheet != null) {
-			pane.getStylesheets().add(stylesheet.toExternalForm());
-		}
+		DialogPane pane = DialogDesign.configure(dialog, shell.window(), title,
+				"Defina a atividade, o prazo e o acompanhamento da execução.");
 
 		contractBox.getItems().setAll(contracts);
 		contractBox.setConverter(new StringConverter<>() {
@@ -147,8 +134,7 @@ public class ServiceOrderFormDialog {
 				field("Status", statusBox),
 				errorLabel);
 		content.getStyleClass().add("dialog-content");
-		content.setPadding(new Insets(8, 0, 0, 0));
-		pane.setContent(content);
+		pane.setContent(DialogDesign.form(content, 0, 1));
 
 		ButtonType save = new ButtonType(submitLabel, ButtonBar.ButtonData.OK_DONE);
 		ButtonType cancel = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -168,6 +154,7 @@ public class ServiceOrderFormDialog {
 	private VBox field(String label, Control control) {
 		Label fieldLabel = new Label(label);
 		fieldLabel.getStyleClass().add("form-label");
+		fieldLabel.setLabelFor(control);
 		control.setMaxWidth(Double.MAX_VALUE);
 		return new VBox(4, fieldLabel, control);
 	}

@@ -80,9 +80,10 @@ public class Navigator {
 	}
 
 	private void display(Parent root) {
-		Scene scene = new Scene(root);
+		Scene scene = new Scene(AppearanceControls.wrap(root, stage));
 		addStylesheet(scene, AUTH_STYLESHEET);
 		addStylesheet(scene, APP_STYLESHEET);
+		AppearanceControls.shortcuts(scene, stage);
 		stage.setScene(scene);
 		if (!stage.isShowing()) {
 			stage.show();

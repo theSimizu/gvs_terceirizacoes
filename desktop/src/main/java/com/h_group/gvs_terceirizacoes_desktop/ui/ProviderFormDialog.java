@@ -144,6 +144,7 @@ public class ProviderFormDialog {
 		Label fieldLabel = new Label(label);
 		fieldLabel.getStyleClass().add("form-label");
 		fieldLabel.setLabelFor(control);
+		fieldLabel.setWrapText(true);
 		control.setMaxWidth(Double.MAX_VALUE);
 		return new VBox(4, fieldLabel, control);
 	}

@@ -13,8 +13,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -133,7 +135,7 @@ public class AppShell {
 		return authSession.isAdministrator();
 	}
 
-	private VBox buildSidebar() {
+	private ScrollPane buildSidebar() {
 		Label brandCaption = new Label("Gestão de serviços");
 		brandCaption.getStyleClass().add("brand-caption");
 		VBox header = new VBox(8, BrandMark.create(124), brandCaption);
@@ -152,9 +154,16 @@ public class AppShell {
 		VBox sidebar = new VBox(header, nav, footer);
 		sidebar.getStyleClass().add("sidebar");
 		sidebar.setPrefWidth(244);
-		sidebar.setMinWidth(244);
-		sidebar.setMaxWidth(244);
-		return sidebar;
+		sidebar.setMinWidth(0);
+		sidebar.setMaxWidth(Double.MAX_VALUE);
+		ScrollPane scroll = new ScrollPane(sidebar);
+		scroll.getStyleClass().add("sidebar-scroll");
+		scroll.setFitToWidth(true);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setPrefWidth(244);
+		scroll.setMinWidth(244);
+		scroll.setMaxWidth(244);
+		return scroll;
 	}
 
 	private Button navButton(String text, String target) {
@@ -162,6 +171,7 @@ public class AppShell {
 		button.getStyleClass().add("nav-item");
 		button.setUserData(target);
 		button.setMaxWidth(Double.MAX_VALUE);
+		button.setWrapText(true);
 		button.setAlignment(Pos.CENTER_LEFT);
 		button.setOnAction(event -> navigate(target));
 		navButtons.add(button);
@@ -174,6 +184,7 @@ public class AppShell {
 
 		Label name = new Label(displayName());
 		name.getStyleClass().add("user-name");
+		name.setWrapText(true);
 
 		Label role = new Label(authSession.isAdministrator() ? "Administrador" : "Usuário");
 		role.getStyleClass().add("user-role");
@@ -197,15 +208,13 @@ public class AppShell {
 		return logoutButton;
 	}
 
-	private VBox buildMain() {
+	private ScrollPane buildMain() {
 		pageTitle.getStyleClass().add("page-title");
-
-		Region spacer = new Region();
-		HBox.setHgrow(spacer, Priority.ALWAYS);
+		pageTitle.setWrapText(true);
 
 		actionBox.setAlignment(Pos.CENTER_RIGHT);
 
-		HBox header = new HBox(16, pageTitle, spacer, actionBox);
+		FlowPane header = new FlowPane(16, 12, pageTitle, actionBox);
 		header.getStyleClass().add("top-header");
 		header.setAlignment(Pos.CENTER_LEFT);
 
@@ -223,7 +232,13 @@ public class AppShell {
 
 		VBox main = new VBox(12, header, loadingLabel, messageLabel, contentHost);
 		main.getStyleClass().add("main-content");
-		return main;
+		main.setMinWidth(0);
+		main.setMinHeight(Region.USE_PREF_SIZE);
+		ScrollPane scroll = new ScrollPane(main);
+		scroll.getStyleClass().add("main-scroll");
+		scroll.setFitToWidth(true);
+		scroll.setFitToHeight(true);
+		return scroll;
 	}
 
 	private String displayName() {

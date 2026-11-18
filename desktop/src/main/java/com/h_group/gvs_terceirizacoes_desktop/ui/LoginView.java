@@ -63,12 +63,14 @@ public class LoginView {
 
 		Label emailLabel = new Label("E-mail");
 		emailLabel.getStyleClass().add("auth-label");
+		emailLabel.setLabelFor(emailField);
 		emailField.getStyleClass().add("auth-input");
 		emailField.setPromptText("seu@email.com");
 		emailField.setOnAction(event -> submit());
 
 		Label passwordLabel = new Label("Senha");
 		passwordLabel.getStyleClass().add("auth-label");
+		passwordLabel.setLabelFor(passwordField);
 		passwordField.getStyleClass().add("auth-input");
 		passwordField.setOnAction(event -> submit());
 
@@ -84,6 +86,8 @@ public class LoginView {
 
 		Hyperlink registerLink = new Hyperlink("Não tem conta? Cadastre-se");
 		registerLink.getStyleClass().add("auth-link");
+		registerLink.setWrapText(true);
+		registerLink.setMaxWidth(Double.MAX_VALUE);
 		registerLink.setOnAction(event -> navigator.showRegister());
 
 		card.getChildren().addAll(title, subtitle, messageLabel, emailGroup, passwordGroup, submitButton,

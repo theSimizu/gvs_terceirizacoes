@@ -1,0 +1,173 @@
+.ui-preferences {
+    -gvs-bg: #edf3f7;
+    -gvs-surface: #ffffff;
+    -gvs-soft: #f6f9fb;
+    -gvs-field: #ffffff;
+    -gvs-hover: #e7f0f5;
+    -gvs-selected: #dbeaf3;
+    -gvs-text: #203b4d;
+    -gvs-muted: #506979;
+    -gvs-placeholder: #607787;
+    -gvs-border: #bccdd8;
+    -gvs-accent: #0c6b94;
+    -gvs-accent-hover: #095576;
+    -gvs-on-accent: #ffffff;
+    -gvs-focus: #9b4c00;
+    -gvs-success: #176143;
+    -gvs-success-bg: #e6f3ed;
+    -gvs-error: #a42f3d;
+    -gvs-error-bg: #fcecee;
+    -gvs-warning: #80500b;
+    -gvs-warning-bg: #fff3db;
+    -gvs-info: #0c6b94;
+    -gvs-info-bg: #e5f0f6;
+    -gvs-logo: #edf4f7;
+    -gvs-chart-pending: #9b681b;
+    -gvs-chart-completed: #187456;
+    -gvs-chart-canceled: #b63846;
+    -gvs-chart-progress: #6c5da3;
+    -fx-base: -gvs-surface;
+    -fx-background: -gvs-bg;
+    -fx-control-inner-background: -gvs-field;
+    -fx-text-base-color: -gvs-text;
+    -fx-text-background-color: -gvs-text;
+    -fx-accent: -gvs-accent;
+    -fx-focus-color: -gvs-focus;
+    -fx-faint-focus-color: transparent;
+}
+.ui-preferences.theme-dark {
+    -gvs-bg: #0f1b27;
+    -gvs-surface: #1a2b3b;
+    -gvs-soft: #142332;
+    -gvs-field: #112230;
+    -gvs-hover: #284253;
+    -gvs-selected: #22485d;
+    -gvs-text: #edf5fa;
+    -gvs-muted: #b8cad7;
+    -gvs-placeholder: #a5bbc9;
+    -gvs-border: #587183;
+    -gvs-accent: #68c8ec;
+    -gvs-accent-hover: #9adef6;
+    -gvs-on-accent: #102431;
+    -gvs-focus: #ffc56c;
+    -gvs-success: #8bdab3;
+    -gvs-success-bg: #1c3e35;
+    -gvs-error: #ffb4bd;
+    -gvs-error-bg: #492c39;
+    -gvs-warning: #f6d28c;
+    -gvs-warning-bg: #443b25;
+    -gvs-info: #8ed6f0;
+    -gvs-info-bg: #193e53;
+    -gvs-logo: #d6e4ec;
+    -gvs-chart-pending: #efc36a;
+    -gvs-chart-completed: #70caa0;
+    -gvs-chart-canceled: #f59aa7;
+    -gvs-chart-progress: #b7a8ef;
+}
+.ui-preferences.color-safe {
+    -gvs-success: #005c86;
+    -gvs-success-bg: #e1f0f9;
+    -gvs-error: #9b3b00;
+    -gvs-error-bg: #fff0e2;
+    -gvs-warning: #754918;
+    -gvs-warning-bg: #fff4da;
+    -gvs-info: #634b86;
+    -gvs-info-bg: #f0eaf8;
+    -gvs-chart-pending: #0072b2;
+    -gvs-chart-completed: #d55e00;
+    -gvs-chart-canceled: #8665a5;
+    -gvs-chart-progress: #636363;
+}
+.ui-preferences.theme-dark.color-safe {
+    -gvs-success: #8bd3ff;
+    -gvs-success-bg: #173a50;
+    -gvs-error: #ffc28f;
+    -gvs-error-bg: #4a3524;
+    -gvs-warning: #f6d28c;
+    -gvs-warning-bg: #443b25;
+    -gvs-info: #d4b9f5;
+    -gvs-info-bg: #382d4b;
+    -gvs-chart-pending: #78c8f5;
+    -gvs-chart-completed: #f5b27d;
+    -gvs-chart-canceled: #c5a7eb;
+    -gvs-chart-progress: #d0d0d0;
+}
+.ui-preferences.contrast-high {
+    -gvs-bg: #ffffff;
+    -gvs-surface: #ffffff;
+    -gvs-soft: #ffffff;
+    -gvs-field: #ffffff;
+    -gvs-hover: #e2eaf0;
+    -gvs-selected: #d4e6f0;
+    -gvs-text: #000000;
+    -gvs-muted: #202020;
+    -gvs-placeholder: #3d3d3d;
+    -gvs-border: #1a1a1a;
+    -gvs-accent: #004765;
+    -gvs-accent-hover: #00334a;
+    -gvs-on-accent: #ffffff;
+    -gvs-focus: #8f4100;
+}
+.ui-preferences.theme-dark.contrast-high {
+    -gvs-bg: #000000;
+    -gvs-surface: #000000;
+    -gvs-soft: #000000;
+    -gvs-field: #000000;
+    -gvs-hover: #242424;
+    -gvs-selected: #163b52;
+    -gvs-text: #ffffff;
+    -gvs-muted: #ffffff;
+    -gvs-placeholder: #e1e1e1;
+    -gvs-border: #ffffff;
+    -gvs-accent: #9edfff;
+    -gvs-accent-hover: #d4f2ff;
+    -gvs-on-accent: #000000;
+    -gvs-focus: #ffda76;
+}
+.application-frame { -fx-background-color: -gvs-bg; }
+.appearance-bar {
+    -fx-background-color: -gvs-soft;
+    -fx-padding: 8px 18px;
+    -fx-border-color: transparent transparent -gvs-border transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+.appearance-bar .label { -fx-text-fill: -gvs-muted; }
+.appearance-button, .appearance-bar .combo-box {
+    -fx-background-color: -gvs-surface;
+    -fx-border-color: -gvs-border;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 7px;
+    -fx-text-fill: -gvs-text;
+    -fx-padding: 6px 11px;
+    -fx-cursor: hand;
+}
+.appearance-bar .combo-box .list-cell { -fx-text-fill: -gvs-text; -fx-padding: 1px 6px; }
+.appearance-button:hover { -fx-background-color: -gvs-hover; }
+.appearance-notice { -fx-text-fill: -gvs-error; -fx-background-color: -gvs-error-bg; -fx-padding: 8px 18px; }
+.appearance-button:disabled { -fx-opacity: 0.5; }
+.brand-logo-surface { -fx-background-color: -gvs-logo; -fx-background-radius: 12px; -fx-padding: 8px; }
+.compact-auth .auth-form-area { -fx-background-radius: 0 0 24px 24px; }
+.auth-brand-compact { -fx-background-color: -gvs-soft; -fx-padding: 18px 28px; -fx-background-radius: 24px 24px 0 0; }
+.auth-brand-compact .label { -fx-text-fill: -gvs-text; -fx-font-weight: bold; }
+.sidebar-scroll, .sidebar-scroll > .viewport, .main-scroll, .main-scroll > .viewport {
+    -fx-background-color: transparent; -fx-padding: 0; -fx-background-insets: 0;
+}
+.sidebar-scroll { -fx-border-color: transparent; }
+.check-box { -fx-text-fill: -gvs-text; }
+.check-box .box { -fx-background-color: -gvs-field; -fx-border-color: -gvs-border; -fx-border-radius: 4px; }
+.check-box:selected .mark { -fx-background-color: -gvs-accent; }
+.button:focused, .combo-box:focused, .hyperlink:focused, .check-box:focused, .text-input:focused {
+    -fx-border-color: -gvs-focus;
+    -fx-border-width: 2px;
+    -fx-border-insets: -2px;
+}
+.chart-summary { -fx-text-fill: -gvs-text; -fx-font-size: 0.9286em; -fx-padding: 8px 0 0 0; }
+.contrast-high .status-badge { -fx-border-color: -gvs-text; -fx-border-radius: 10px; }
+.contrast-high .auth-surface, .contrast-high .btn-primary, .contrast-high .nav-item.active,
+.reduced-motion .auth-surface, .reduced-motion .btn-primary, .reduced-motion .nav-item.active { -fx-effect: none; }
+.large-text .nav-item { -fx-padding: 10px 12px; }
+.large-text .main-content { -fx-padding: 0 20px 20px 20px; }
+.large-text .auth-root { -fx-padding: 20px; }
+.theme-dark .auth-root, .contrast-high .auth-root { -fx-background-color: -gvs-bg; }
+.theme-dark .auth-brand, .contrast-high .auth-brand { -fx-background-color: -gvs-soft; }
+.theme-dark .main-content, .contrast-high .main-content { -fx-background-color: transparent; }

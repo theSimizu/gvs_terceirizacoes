@@ -1,50 +1,45 @@
 .root {
     -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
-    -fx-font-size: 14px;
+    -fx-font-size: 1.0000em;
 }
 .auth-scroll, .auth-scroll > .viewport {
-    -fx-background-color: #eef4f7;
+    -fx-background-color: -gvs-bg;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
 .auth-root {
-    -fx-background-color: linear-gradient(to bottom right, #f5f8fa, #e5eff4);
+    -fx-background-color: linear-gradient(to bottom right, -gvs-bg, -gvs-bg);
     -fx-padding: 32px;
 }
 .auth-surface {
-    -fx-background-color: #f9fbfc;
+    -fx-background-color: -gvs-soft;
     -fx-background-radius: 24px;
-    -fx-border-color: #d8e5ec;
+    -fx-border-color: -gvs-border;
     -fx-border-radius: 24px;
     -fx-effect: dropshadow(gaussian, rgba(26, 64, 85, 0.10), 32, 0, 0, 10);
 }
 .auth-brand {
-    -fx-background-color: linear-gradient(to bottom right, #eaf3f7, #f1f6f8);
+    -fx-background-color: linear-gradient(to bottom right, -gvs-soft, -gvs-soft);
     -fx-background-radius: 24px 0 0 24px;
     -fx-padding: 36px;
 }
 .brand-eyebrow {
-    -fx-font-size: 11px;
+    -fx-font-size: 0.7857em;
     -fx-font-weight: bold;
-    -fx-text-fill: #0c6b94;
-}
-.brand-headline {
-    -fx-font-size: 29px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #203b4d;
+    -fx-text-fill: -gvs-accent;
 }
 .brand-description {
-    -fx-font-size: 14px;
-    -fx-text-fill: #5d7485;
+    -fx-font-size: 1.0000em;
+    -fx-text-fill: -gvs-muted;
     -fx-line-spacing: 4px;
 }
 .brand-footer {
-    -fx-text-fill: #6b8291;
-    -fx-font-size: 10px;
+    -fx-text-fill: -gvs-muted;
+    -fx-font-size: 0.7143em;
     -fx-padding: 20px 0 0 0;
 }
 .auth-form-area {
-    -fx-background-color: #f9fbfc;
+    -fx-background-color: -gvs-soft;
     -fx-background-radius: 0 24px 24px 0;
     -fx-padding: 32px;
 }
@@ -55,59 +50,59 @@
 }
 .auth-card-register { -fx-spacing: 9px; }
 .auth-title {
-    -fx-text-fill: #203b4d;
-    -fx-font-size: 25px;
+    -fx-text-fill: -gvs-text;
+    -fx-font-size: 1.7857em;
     -fx-font-weight: bold;
 }
 .auth-subtitle {
-    -fx-text-fill: #647c8c;
-    -fx-font-size: 13px;
+    -fx-text-fill: -gvs-muted;
+    -fx-font-size: 0.9286em;
     -fx-padding: 0 0 8px 0;
 }
 .auth-label {
-    -fx-text-fill: #354f61;
-    -fx-font-size: 12px;
+    -fx-text-fill: -gvs-text;
+    -fx-font-size: 0.8571em;
     -fx-font-weight: bold;
 }
 .auth-input {
-    -fx-background-color: #ffffff;
+    -fx-background-color: -gvs-surface;
     -fx-background-insets: 0;
     -fx-background-radius: 9px;
-    -fx-border-color: #d3e0e8;
+    -fx-border-color: -gvs-border;
     -fx-border-radius: 9px;
     -fx-padding: 11px 13px;
-    -fx-text-fill: #203b4d;
-    -fx-prompt-text-fill: #899aa7;
-    -fx-font-size: 14px;
+    -fx-text-fill: -gvs-text;
+    -fx-prompt-text-fill: -gvs-placeholder;
+    -fx-font-size: 1.0000em;
 }
 .auth-card-register .auth-input { -fx-padding: 9px 13px; }
 .auth-input:focused {
-    -fx-border-color: #0c6b94;
+    -fx-border-color: -gvs-accent;
     -fx-effect: dropshadow(gaussian, rgba(12, 107, 148, 0.12), 6, 0, 0, 0);
 }
 .auth-button {
-    -fx-background-color: #0c6b94;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: -gvs-accent;
+    -fx-text-fill: -gvs-on-accent;
     -fx-background-radius: 9px;
     -fx-border-color: transparent;
     -fx-padding: 12px 20px;
-    -fx-font-size: 14px;
+    -fx-font-size: 1.0000em;
     -fx-font-weight: bold;
     -fx-cursor: hand;
 }
-.auth-button:hover { -fx-background-color: #095576; }
+.auth-button:hover { -fx-background-color: -gvs-accent-hover; }
 .auth-button:disabled { -fx-opacity: 0.6; }
 .auth-error, .auth-success {
     -fx-background-radius: 8px;
     -fx-padding: 10px 12px;
-    -fx-font-size: 12px;
+    -fx-font-size: 0.8571em;
 }
-.auth-error { -fx-background-color: #fcecee; -fx-text-fill: #a33140; }
-.auth-success { -fx-background-color: #e8f4ee; -fx-text-fill: #22654b; }
-.auth-hint { -fx-text-fill: #647c8c; -fx-font-size: 11px; }
+.auth-error { -fx-background-color: -gvs-error-bg; -fx-text-fill: -gvs-error; }
+.auth-success { -fx-background-color: -gvs-success-bg; -fx-text-fill: -gvs-success; }
+.auth-hint { -fx-text-fill: -gvs-muted; -fx-font-size: 0.7857em; }
 .auth-link {
-    -fx-text-fill: #0c6b94;
-    -fx-font-size: 12px;
+    -fx-text-fill: -gvs-accent;
+    -fx-font-size: 0.8571em;
     -fx-border-color: transparent;
     -fx-padding: 6px 0 0 0;
 }

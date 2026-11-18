@@ -5,10 +5,16 @@ import com.h_group.gvs_terceirizacoes_desktop.session.AuthSession;
 import com.h_group.gvs_terceirizacoes_desktop.validation.AuthValidator;
 import java.io.InputStream;
 import java.net.URL;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Component;
@@ -34,16 +40,31 @@ public class Navigator {
 
 	public void initialize(Stage stage) {
 		this.stage = stage;
+		stage.initStyle(StageStyle.DECORATED);
+		stage.setResizable(true);
 		stage.setTitle(TITLE);
 		loadIcon();
-		stage.setWidth(1280);
-		stage.setHeight(800);
-		stage.setMinWidth(1024);
-		stage.setMinHeight(700);
+		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+		double availableWidth = Math.max(1, bounds.getWidth() - 32);
+		double availableHeight = Math.max(1, bounds.getHeight() - 32);
+		stage.setMinWidth(Math.min(1024, availableWidth));
+		stage.setMinHeight(Math.min(700, availableHeight));
+		stage.setWidth(Math.min(1280, availableWidth));
+		stage.setHeight(Math.min(800, availableHeight));
 	}
 
 	public void showLogin() {
 		showLogin(null);
+	}
+
+	public void showLoading() {
+		Label title = new Label("Preparando seu ambiente");
+		title.getStyleClass().add("auth-title");
+		Label description = new Label("Verificando sua sessão…");
+		description.getStyleClass().add("auth-subtitle");
+		VBox loading = new VBox(18, title, description, new ProgressIndicator());
+		loading.getStyleClass().add("auth-card");
+		display(AuthLayout.wrap(loading));
 	}
 
 	public void showLogin(String notice) {

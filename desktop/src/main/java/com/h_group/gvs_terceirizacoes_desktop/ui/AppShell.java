@@ -3,7 +3,6 @@ package com.h_group.gvs_terceirizacoes_desktop.ui;
 import com.h_group.gvs_terceirizacoes_desktop.dto.UserDTO;
 import com.h_group.gvs_terceirizacoes_desktop.service.AuthService;
 import com.h_group.gvs_terceirizacoes_desktop.session.AuthSession;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -14,14 +13,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 
 /**
  * Monta navegação, cabeçalho e área de conteúdo da aplicação autenticada.
@@ -123,6 +121,10 @@ public class AppShell {
 		navigator.showLogin("Sessão expirada. Faça login novamente.");
 	}
 
+	public Window window() {
+		return contentHost.getScene() == null ? null : contentHost.getScene().getWindow();
+	}
+
 	public boolean canManageRegistries() {
 		return authSession.isAdministrator();
 	}
@@ -132,9 +134,11 @@ public class AppShell {
 	}
 
 	private VBox buildSidebar() {
-		VBox header = new VBox(createLogo());
+		Label brandCaption = new Label("Gestão de serviços");
+		brandCaption.getStyleClass().add("brand-caption");
+		VBox header = new VBox(8, BrandMark.create(124), brandCaption);
 		header.getStyleClass().add("sidebar-header");
-		header.setAlignment(Pos.CENTER);
+		header.setAlignment(Pos.CENTER_LEFT);
 
 		VBox nav = new VBox(8);
 		nav.getStyleClass().add("sidebar-nav");
@@ -147,9 +151,9 @@ public class AppShell {
 
 		VBox sidebar = new VBox(header, nav, footer);
 		sidebar.getStyleClass().add("sidebar");
-		sidebar.setPrefWidth(280);
-		sidebar.setMinWidth(280);
-		sidebar.setMaxWidth(280);
+		sidebar.setPrefWidth(244);
+		sidebar.setMinWidth(244);
+		sidebar.setMaxWidth(244);
 		return sidebar;
 	}
 
@@ -245,19 +249,5 @@ public class AppShell {
 		return initials.toString();
 	}
 
-	private ImageView createLogo() {
-		try (InputStream stream = AppShell.class.getResourceAsStream("/images/logo.png")) {
-			if (stream != null) {
-				ImageView view = new ImageView(new Image(stream));
-				view.setFitWidth(140);
-				view.setPreserveRatio(true);
-				view.setSmooth(true);
-				return view;
-			}
-		} catch (Exception exception) {
-			// Ignore a missing or invalid logo.
-		}
-		return new ImageView();
-	}
 
 }

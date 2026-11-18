@@ -35,7 +35,13 @@ final class DialogDesign {
 		if (stylesheet != null) {
 			pane.getStylesheets().add(stylesheet.toExternalForm());
 		}
-		Label eyebrow = new Label("GVS  /  CADASTRO");
+		UiPreferences.get().attach(pane);
+		UiPreferences.get().observe(pane, value -> {
+			double available = Screen.getPrimary().getVisualBounds().getWidth() - 64;
+			pane.setPrefWidth(Math.min(660.0 * value.fontPercent() / 100, available));
+			pane.setMaxHeight(Screen.getPrimary().getVisualBounds().getHeight() - 64);
+		});
+		Label eyebrow = new Label("GVS TERCEIRIZAÇÕES");
 		eyebrow.getStyleClass().add("dialog-eyebrow");
 		Label heading = new Label(title);
 		heading.getStyleClass().add("dialog-title");

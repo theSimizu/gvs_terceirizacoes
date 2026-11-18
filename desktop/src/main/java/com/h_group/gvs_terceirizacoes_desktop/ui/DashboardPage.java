@@ -35,6 +35,8 @@ public class DashboardPage implements Page {
 	private final Label contractsValue = new Label("0");
 
 	private final PieChart ordersChart = new PieChart();
+	private final Label ordersSummary = new Label();
+	private final Label providersSummary = new Label();
 
 	private final BarChart<String, Number> providersChart = new BarChart<>(new CategoryAxis(), new NumberAxis());
 
@@ -61,8 +63,28 @@ public class DashboardPage implements Page {
 		VBox ordersCard = chartCard("Status das Ordens de Serviço", ordersChart);
 		VBox providersCard = chartCard("Especialidades dos Prestadores", providersChart);
 
+		ordersCard.getChildren().add(ordersSummary);
+		providersCard.getChildren().add(providersSummary);
 		HBox charts = new HBox(24, ordersCard, providersCard);
-		return new VBox(24, stats, charts);
+		VBox stackedCharts = new VBox(24);
+		VBox stackedStats = new VBox(16);
+		var statCards = java.util.List.copyOf(stats.getChildren());
+		VBox root = new VBox(24, stats, charts);
+		UiPreferences.get().observe(root, value -> {
+			var targetCharts = value.fontPercent() >= 150 ? stackedCharts : charts;
+			var targetStats = value.fontPercent() >= 150 ? stackedStats : stats;
+			if (root.getChildren().get(1) != targetCharts) {
+				charts.getChildren().clear();
+				stackedCharts.getChildren().clear();
+				targetCharts.getChildren().addAll(ordersCard, providersCard);
+				root.getChildren().set(1, targetCharts);
+				stats.getChildren().clear();
+				stackedStats.getChildren().clear();
+				targetStats.getChildren().addAll(statCards);
+				root.getChildren().set(0, targetStats);
+			}
+		});
+		return root;
 	}
 
 	@Override
@@ -76,6 +98,14 @@ public class DashboardPage implements Page {
 	}
 
 	private void configureCharts() {
+		for (Label summary : new Label[] {ordersSummary, providersSummary}) {
+			summary.setWrapText(true);
+			summary.getStyleClass().add("chart-summary");
+		}
+		UiPreferences.get().observe(ordersChart, value -> {
+			ordersChart.setAnimated(!value.reducedMotion());
+			providersChart.setAnimated(!value.reducedMotion());
+		});
 		ordersChart.setLegendSide(Side.BOTTOM);
 		ordersChart.setLabelsVisible(true);
 		ordersChart.setMinHeight(260);
@@ -118,6 +148,17 @@ public class DashboardPage implements Page {
 		orderLabels.put("pending", "Pendentes");
 		orderLabels.put("completed", "Concluídas");
 		orderLabels.put("canceled", "Canceladas");
+		orderLabels.put("in_progress", "Em andamento");
+		String orderText = orderLabels.entrySet().stream()
+				.map(entry -> entry.getValue() + ": " + summary.ordersByStatus().getOrDefault(entry.getKey(), 0L))
+				.collect(java.util.stream.Collectors.joining(" · "));
+		ordersSummary.setText(orderText);
+		ordersChart.setAccessibleText("Ordens de serviço. " + orderText);
+		String providerText = summary.providersBySpecialty().entrySet().stream()
+				.map(entry -> entry.getKey() + ": " + entry.getValue())
+				.collect(java.util.stream.Collectors.joining(" · "));
+		providersSummary.setText(providerText.isEmpty() ? "Nenhum prestador por especialidade." : providerText);
+		providersChart.setAccessibleText("Especialidades dos prestadores. " + providersSummary.getText());
 		orderLabels.forEach((status, label) -> {
 			long count = summary.ordersByStatus().getOrDefault(status, 0L);
 			if (count > 0) {
@@ -143,6 +184,7 @@ public class DashboardPage implements Page {
 
 	private VBox statCard(String title, Label value) {
 		Label titleLabel = new Label(title);
+		titleLabel.setWrapText(true);
 		titleLabel.getStyleClass().add("stat-title");
 		value.getStyleClass().add("stat-value");
 

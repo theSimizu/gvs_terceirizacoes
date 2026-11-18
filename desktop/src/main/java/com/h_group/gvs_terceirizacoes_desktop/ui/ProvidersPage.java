@@ -480,6 +480,7 @@ public class ProvidersPage implements Page {
 	private void styleDialog(Dialog<?> dialog) {
 		DialogPane pane = dialog.getDialogPane();
 		pane.getStyleClass().add("app-dialog");
+		UiPreferences.get().attach(pane);
 		URL stylesheet = ProvidersPage.class.getResource(STYLESHEET);
 		if (stylesheet != null) {
 			pane.getStylesheets().add(stylesheet.toExternalForm());

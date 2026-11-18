@@ -4,6 +4,8 @@ Com o servidor já ligado, abra a pasta `desktop` e dê dois cliques em **Inicia
 
 ## Controles da janela
 
+Para escolher tema claro/escuro, ajustar o tamanho da fonte e abrir alto contraste, paleta alternativa ou redução de animações, use os controles no topo da aplicação. Veja [aparência e acessibilidade visual](ACESSIBILIDADE.md).
+
 A barra superior do Windows contém os botões **Minimizar**, **Maximizar/Restaurar** e **Fechar**. A janela abre centralizada, com tamanho limitado à área útil da tela para manter esses controles visíveis. Também é possível redimensionar pelas bordas.
 
 Depois de minimizar, clique no GVS na barra de tarefas para voltar. Fechar encerra o aplicativo desktop; a API e o MySQL no Docker continuam ligados para os outros computadores.

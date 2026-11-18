@@ -84,6 +84,8 @@ public class RegisterView {
 
 		Hyperlink loginLink = new Hyperlink("Já tem conta? Entrar");
 		loginLink.getStyleClass().add("auth-link");
+		loginLink.setWrapText(true);
+		loginLink.setMaxWidth(Double.MAX_VALUE);
 		loginLink.setOnAction(event -> navigator.showLogin());
 
 		card.getChildren().addAll(title, subtitle, messageLabel, nameGroup, emailGroup, passwordGroup,
@@ -95,6 +97,7 @@ public class RegisterView {
 	private VBox fieldGroup(String labelText, TextField input, String prompt) {
 		Label label = new Label(labelText);
 		label.getStyleClass().add("auth-label");
+		label.setLabelFor(input);
 		input.getStyleClass().add("auth-input");
 		if (prompt != null && !prompt.isBlank()) {
 			input.setPromptText(prompt);

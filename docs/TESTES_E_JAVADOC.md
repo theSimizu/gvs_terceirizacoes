@@ -22,7 +22,9 @@ Em outro terminal, na pasta `desktop`:
 
 O desktop inclui testes de controles JavaFX e precisa de ambiente gráfico com bibliotecas nativas compatíveis. Não pressupõe execução em servidor sem interface gráfica.
 
-Na revisão desta documentação, em 02/11/2026, foram aprovados **33 testes no backend e 138 no desktop, total de 171**, sem falhas, erros ou testes ignorados. O número descreve essa revisão e pode mudar conforme a suíte evoluir.
+Em **18/11/2026**, a suíte desktop passou com **147 testes**, sem falhas, erros ou testes ignorados, incluindo preferências de aparência, persistência, tamanho da fonte, atalhos e amostras de contraste. O escopo está descrito em [acessibilidade visual](../desktop/ACESSIBILIDADE.md).
+
+Na revisão de 02/11/2026, foram aprovados **33 testes no backend e 138 no desktop, total de 171**. Os 33 testes do backend foram executados novamente em 10/11/2026, junto do [ensaio local com MySQL real](../backend/README_SERVIDOR.md). Esses números registram execuções de datas e escopos diferentes; não representam uma nova execução conjunta dos dois módulos.
 
 As suítes cobrem regras, perfis, autorização, sessão, mensagens e fluxos com H2, HTTP simulado/Feign e controles JavaFX. Elas não comprovam funcionamento no MySQL, instalação de pacote distribuível nem apresentação em três máquinas. Use o [roteiro de rede](INSTALACAO_E_REDE.md) para registrar essas validações.
 

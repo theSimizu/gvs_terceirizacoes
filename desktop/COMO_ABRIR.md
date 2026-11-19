@@ -60,9 +60,9 @@ O parâmetro opcional `-JavaHome` informa a pasta do JDK. `-CheckOnly` confere J
 
 ## Verificação desta versão
 
-O desktop usa tema claro com azul petróleo, marca integrada ao fundo e telas de entrada/cadastro com altura ajustada ao conteúdo. Os formulários de cliente, prestador, contrato e ordem compartilham cabeçalho, organização em colunas e rolagem quando necessário. O PNG original da marca foi preservado.
+O desktop oferece temas claro e escuro, marca integrada ao fundo e telas de entrada/cadastro com altura ajustada ao conteúdo. Os formulários de cliente, prestador, contrato e ordem compartilham cabeçalho, organização em colunas e rolagem quando necessário. O PNG original da marca foi preservado.
 
-A suíte mais recente passou com **139 testes**, sem falhas, erros ou testes ignorados. Foram conferidos visualmente o login, o cadastro de conta e o modal de cliente em prévia isolada, sem gravação no banco. A revisão visual dos outros três formulários continua pendente, assim como o ensaio nas três máquinas.
+A suíte mais recente, em 18/11/2026, passou com **147 testes**, sem falhas, erros ou testes ignorados. Foram conferidos visualmente o login, o cadastro de conta e o modal de cliente em prévia isolada, sem gravação no banco. A entrada e o painel de acessibilidade também foram conferidos em tema escuro, alto contraste, paleta alternativa e fonte em 200%. A revisão visual completa dos formulários e combinações continua pendente, assim como o ensaio nas três máquinas. Veja o escopo dos testes em [acessibilidade visual](ACESSIBILIDADE.md).
 
 Em 18/11/2026, a correção do caminho de abertura passou pelos 138 testes do desktop, sem falhas ou erros. O iniciador foi executado na pasta real do projeto, com JDK 25 e API local: a tela de acesso abriu com sessão de teste separada e encerrou normalmente. O login administrativo na instalação local também foi observado em uma sessão operada pela usuária. O ensaio físico em três máquinas continua pendente.
 
